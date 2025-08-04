@@ -2,7 +2,8 @@ generator client {
   provider             = "prisma-client-py"
   recursive_type_depth = "-1"
   interface            = "asyncio"
-  previewFeatures = ["prismaSchemaFolder"]
+  binaryTargets = ["native"]
+  features = ["prismaSchemaFolder"]
 }
 
 datasource db {

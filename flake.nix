@@ -1,41 +1,30 @@
 {
-  description = "All Thing's Linux discord bot - awbot";
+  description = "Prisma on NixOS dev shell";
 
   inputs = {
-    nixpkgs = {
-      type = "github";
-      owner = "NixOS";
-      repo = "nixpkgs";
-      ref = "nixos-unstable";
-    };
-
-    flake-parts = {
-      type = "github";
-      owner = "hercules-ci";
-      repo = "flake-parts";
-      ref = "main";
-    };
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = inputs@{
-    self,
-    nixpkgs,
-    flake-parts,
-    ...
-  }:
-    flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = [
-        "x86_64-linux"
-        "x86_64-darwin"
-        "aarch64-linux"
-        "aarch64-darwin"
-      ];
+  outputs = { self, nixpkgs, flake-utils }:
+    flake-utils.lib.eachDefaultSystem (system:
+      let
+        pkgs = import nixpkgs { inherit system; };
+      in {
+        devShells.default = pkgs.mkShell {
+          buildInputs = [
+            pkgs.nodejs_20
+            pkgs.prisma
+            pkgs.openssl
+            pkgs.python312
+            pkgs.python312Packages.pip
+            pkgs.python312Packages.virtualenv
+          ];
 
-      perSystem = { pkgs, self', ... }: {
-        devShells = {
-          default = self'.devShells.awbot;
-          awbot = pkgs.callPackage ./shell.nix { inherit pkgs self; };
+          # Help Prisma engines find OpenSSL at runtime
+          LD_LIBRARY_PATH = "${pkgs.openssl.out}/lib";
+          # Some setups also benefit from:
+          # PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig";
         };
-      };
-    };
+      });
 }

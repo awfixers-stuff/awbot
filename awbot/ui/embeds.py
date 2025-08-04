@@ -2,11 +2,9 @@ from datetime import datetime
 from enum import Enum
 
 import discord
-from discord import Embed
 from loguru import logger
 
-from awbot.awbot.bot import awbot
-from awbot.awbot.ui.embeds import EmbedType  # If EmbedType is defined here, this is redundant but safe.
+from awbot.bot import awbot
 from awbot.utils.config import Config
 from awbot.utils.constants import CONST
 

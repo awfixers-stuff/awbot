@@ -1,9 +1,3 @@
-"""Environment management utility for awbot.
-
-This module provides centralized environment configuration management,
-following 12-factor app methodology for configuration.
-"""
-
 import enum
 import os
 from pathlib import Path

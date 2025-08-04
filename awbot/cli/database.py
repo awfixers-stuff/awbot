@@ -1,5 +1,3 @@
-"""Database commands for the awbot CLI."""
-
 import os
 from collections.abc import Callable
 from typing import TypeVar
