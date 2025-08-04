@@ -1,9 +1,9 @@
 # ==============================================================================
-# TUX DISCORD BOT - COMPREHENSIVE SECURITY SCANNING WORKFLOW
+# awbot DISCORD BOT - COMPREHENSIVE SECURITY SCANNING WORKFLOW
 # ==============================================================================
 #
 # This workflow provides comprehensive security scanning and vulnerability
-# management for the Tux Discord bot project. It implements multiple layers
+# management for the awbot Discord bot project. It implements multiple layers
 # of security analysis including static code analysis, dependency scanning,
 # and automated security advisory management with intelligent automation
 # for low-risk updates.
@@ -51,7 +51,7 @@ on:
   # SCHEDULED COMPREHENSIVE SCANNING
   # Weekly deep analysis spread across different days from other workflows
   schedule:
-    - cron: 20 7 * * 1  # Weekly on Mondays (spread from other schedules)
+    - cron: 20 7 * * 1 # Weekly on Mondays (spread from other schedules)
 # CONCURRENCY MANAGEMENT
 # Prevents resource conflicts while allowing parallel security analysis
 concurrency:
@@ -74,10 +74,10 @@ jobs:
     # Focuses on main branch and scheduled runs for comprehensive coverage
     if: github.event_name != 'pull_request'
     permissions:
-      security-events: write    # Required for SARIF upload
-      packages: read           # Required for dependency analysis
-      actions: read           # Required for workflow analysis
-      contents: read          # Required for repository access
+      security-events: write # Required for SARIF upload
+      packages: read # Required for dependency analysis
+      actions: read # Required for workflow analysis
+      contents: read # Required for repository access
 
     # MULTI-LANGUAGE ANALYSIS STRATEGY
     # Analyzes different languages with optimized configurations
@@ -130,8 +130,8 @@ jobs:
     # Only analyzes dependency changes in pull requests for targeted feedback
     if: github.event_name == 'pull_request'
     permissions:
-      contents: read           # Required for repository access
-      pull-requests: write    # Required for PR comment posting
+      contents: read # Required for repository access
+      pull-requests: write # Required for PR comment posting
     steps:
       # REPOSITORY CHECKOUT
       # Required for dependency comparison between base and head branches
@@ -143,8 +143,8 @@ jobs:
       - name: Dependency Review
         uses: actions/dependency-review-action@da24556b548a50705dd671f47852072ea4c105d9 # v4
         with:
-          fail-on-severity: high              # Block high-severity vulnerabilities
-          comment-summary-in-pr: always       # Always provide PR feedback
+          fail-on-severity: high # Block high-severity vulnerabilities
+          comment-summary-in-pr: always # Always provide PR feedback
 
   # ============================================================================
   # SECURITY ADVISORIES - Python Dependency Vulnerability Monitoring
@@ -161,8 +161,8 @@ jobs:
     # Monitors production dependencies, skips pull request analysis
     if: github.event_name != 'pull_request'
     permissions:
-      contents: read           # Required for repository access
-      security-events: write   # Required for security event reporting
+      contents: read # Required for repository access
+      security-events: write # Required for security event reporting
     steps:
       # REPOSITORY CHECKOUT
       # Required for dependency file access and analysis
@@ -175,10 +175,10 @@ jobs:
       - name: Setup Python Environment
         uses: ./.github/actions/setup-python
         with:
-          python-version: '3.13'
+          python-version: "3.13"
           install-groups: main
           cache-suffix: security
-          generate-prisma: 'false'
+          generate-prisma: "false"
 
       # SECURITY VULNERABILITY SCANNING
       # Comprehensive security advisory checking with structured output
@@ -214,11 +214,12 @@ jobs:
     # SECURITY CONDITIONS
     # Strict conditions to ensure automated merging is safe and appropriate
     # Only processes Dependabot PRs from the same repository (not forks)
-    if: github.actor == 'dependabot[bot]' && github.event_name == 'pull_request' &&
+    if:
+      github.actor == 'dependabot[bot]' && github.event_name == 'pull_request' &&
       github.event.pull_request.head.repo.full_name == github.repository
     permissions:
-      contents: write         # Required for auto-approval
-      pull-requests: write   # Required for PR management
+      contents: write # Required for auto-approval
+      pull-requests: write # Required for PR management
     steps:
       # DEPENDABOT METADATA EXTRACTION
       # Analyzes Dependabot PR metadata for intelligent automation decisions
@@ -234,7 +235,8 @@ jobs:
       # Minor updates: New features with backward compatibility (1.0.0 → 1.1.0)
       # Major updates: Breaking changes requiring manual review (excluded)
       - name: Auto-approve patch and minor updates
-        if: steps.metadata.outputs.update-type == 'version-update:semver-patch' ||
+        if:
+          steps.metadata.outputs.update-type == 'version-update:semver-patch' ||
           steps.metadata.outputs.update-type == 'version-update:semver-minor'
         run: gh pr review --approve "$PR_URL"
         env:

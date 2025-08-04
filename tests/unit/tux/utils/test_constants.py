@@ -1,6 +1,6 @@
 """Tests for the constants module."""
 
-from tux.utils.constants import CONST, Constants
+from awbot.utils.constants import CONST, Constants
 
 
 class TestConstants:

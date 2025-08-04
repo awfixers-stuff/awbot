@@ -1,4 +1,4 @@
-"""Tests for the tux.utils.exceptions module."""
+"""Tests for the awbot.utils.exceptions module."""
 
 from typing import Any
 from unittest.mock import Mock
@@ -6,7 +6,7 @@ from unittest.mock import Mock
 import pytest
 
 from prisma.models import Case
-from tux.utils.exceptions import (
+from awbot.utils.exceptions import (
     APIConnectionError,
     APIRequestError,
     APIResourceNotFoundError,

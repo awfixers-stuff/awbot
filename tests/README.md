@@ -1,34 +1,34 @@
-# Testing Guide for Tux Discord Bot
+# Testing Guide for awbot Discord Bot
 
-Welcome to the testing documentation for the Tux Discord Bot! This guide will help you understand how to write, run, and maintain tests in this project.
+Welcome to the testing documentation for the awbot Discord Bot! This guide will help you understand how to write, run, and maintain tests in this project.
 
 ## 🚀 Quick Start
 
 ### Running Tests
 
-Use the `poetry runtux test` CLI exclusively for running tests for quick access, instead of direct pytest commands.
+Use the `poetry runawbot test` CLI exclusively for running tests for quick access, instead of direct pytest commands.
 
 ```bash
 # Fast development cycle
-poetry run tux test quick                    # Run tests without coverage (fastest)
-poetry run tux test run                     # Run tests with coverage (recommended)
+poetry run awbot test quick                    # Run tests without coverage (fastest)
+poetry run awbot test run                     # Run tests with coverage (recommended)
 
 # Parallel execution for speed
-poetry run tux test parallel                # Run tests in parallel using multiple CPU cores
+poetry run awbot test parallel                # Run tests in parallel using multiple CPU cores
 
 # Coverage reports
-poetry run tux test coverage --format=html  # Generate HTML coverage report
-poetry run tux test coverage --open-browser # Generate and auto-open HTML report
+poetry run awbot test coverage --format=html  # Generate HTML coverage report
+poetry run awbot test coverage --open-browser # Generate and auto-open HTML report
 
 # Specialized test types
-poetry run tux test benchmark               # Run performance benchmarks
-poetry run tux test html                    # Generate HTML test report
+poetry run awbot test benchmark               # Run performance benchmarks
+poetry run awbot test html                    # Generate HTML test report
 ```
 
 ### First Time Setup
 
 1. **Install dependencies**: Poetry handles all test dependencies automatically
-2. **Verify setup**: Run `poetry run tux test quick` to ensure everything works
+2. **Verify setup**: Run `poetry run awbot test quick` to ensure everything works
 3. **Check Docker**: Some tests require Docker for database operations
 
 ## 📊 Testing Philosophy & Standards
@@ -70,7 +70,7 @@ tests/
 ├── unit/                        # Unit tests (isolated components)
 │   ├── scripts/                 # Testing for project scripts
 │   ├── test_main.py            # Main application tests
-│   └── tux/                    # Main codebase tests
+│   └── awbot/                    # Main codebase tests
 │       ├── cli/                # CLI interface tests
 │       ├── cogs/               # Discord command tests
 │       ├── database/           # Database layer tests
@@ -83,7 +83,7 @@ tests/
 │       └── wrappers/           # External API wrapper tests
 │
 └── integration/                # Integration tests (component interaction)
-    └── tux/                    # End-to-end workflow tests
+    └── awbot/                    # End-to-end workflow tests
         ├── cli/                # CLI integration tests
         ├── handlers/           # Handler integration tests
         ├── ui/                 # UI workflow tests
@@ -122,12 +122,12 @@ Use pytest markers to categorize tests:
 ### Basic Test Structure
 
 ```python
-"""Tests for tux.module_name."""
+"""Tests for awbot.module_name."""
 
 import pytest
 from unittest.mock import AsyncMock, patch
 
-from tux.module_name import function_to_test
+from awbot.module_name import function_to_test
 
 
 class TestFunctionName:
@@ -200,7 +200,7 @@ For database operations:
 import pytest
 from unittest.mock import AsyncMock
 
-from tux.database.controllers.example import ExampleController
+from awbot.database.controllers.example import ExampleController
 
 
 class TestExampleController:
@@ -284,8 +284,8 @@ Planned additions:
 
 ### How Coverage Works
 
-1. **Local Development**: Use `tux test coverage` commands for flexible coverage control
-2. **CI Pipeline**: Automatic coverage reporting to [CodeCov](https://codecov.io/gh/allthingslinux/tux)
+1. **Local Development**: Use `awbot test coverage` commands for flexible coverage control
+2. **CI Pipeline**: Automatic coverage reporting to [CodeCov](https://codecov.io/gh/allthingslinux/awbot)
 3. **Pull Requests**: Coverage reports appear as PR comments
 4. **Component Tracking**: Different coverage targets for different components
 
@@ -295,7 +295,7 @@ Coverage settings are defined in `pyproject.toml`:
 
 ```toml
 [tool.coverage.run]
-source = ["tux"]
+source = ["awbot"]
 branch = true
 parallel = true
 omit = [
@@ -312,21 +312,21 @@ omit = [
 
 ```bash
 # Terminal report
-poetry run tux test coverage --format=term
+poetry run awbot test coverage --format=term
 
 # HTML report (detailed)
-poetry run tux test coverage --format=html
+poetry run awbot test coverage --format=html
 
 # Open HTML report in browser
-poetry run tux test coverage --format=html --open-browser
+poetry run awbot test coverage --format=html --open-browser
 
 # XML report (for CI)
-poetry run tux test coverage --format=xml
+poetry run awbot test coverage --format=xml
 ```
 
 ### CodeCov Dashboard
 
-Visit [codecov.io/gh/allthingslinux/tux](https://codecov.io/gh/allthingslinux/tux) to:
+Visit [codecov.io/gh/allthingslinux/awbot](https://codecov.io/gh/allthingslinux/awbot) to:
 
 - View overall project coverage
 - See component-specific coverage
@@ -344,7 +344,7 @@ Visit [codecov.io/gh/allthingslinux/tux](https://codecov.io/gh/allthingslinux/tu
 
 ### Before Committing
 
-1. **Run tests**: `poetry run tux test run` to ensure all tests pass with coverage
+1. **Run tests**: `poetry run awbot test run` to ensure all tests pass with coverage
 2. **Check style**: Pre-commit hooks will check code formatting
 3. **Review coverage**: Ensure new code has appropriate test coverage
 
@@ -368,16 +368,16 @@ Visit [codecov.io/gh/allthingslinux/tux](https://codecov.io/gh/allthingslinux/tu
 
 ```bash
 # Run with verbose output
-poetry run tux test run -v
+poetry run awbot test run -v
 
 # Run specific test file
-poetry run tux test run tests/unit/tux/utils/test_env.py
+poetry run awbot test run tests/unit/awbot/utils/test_env.py
 
 # Run tests with debugger
-poetry run tux test run --pdb
+poetry run awbot test run --pdb
 
 # Run only failed tests from last run
-poetry run tux test run --lf
+poetry run awbot test run --lf
 ```
 
 ## 🚀 Performance Testing
@@ -396,7 +396,7 @@ def test_performance_critical_function(benchmark):
 Run benchmarks:
 
 ```bash
-poetry run tux test benchmark
+poetry run awbot test benchmark
 ```
 
 ## 🎯 Best Practices
@@ -431,7 +431,7 @@ poetry run tux test benchmark
 - **Pytest Documentation**: [docs.pytest.org](https://docs.pytest.org/)
 - **Discord.py Testing**: [discordpy.readthedocs.io](https://discordpy.readthedocs.io/)
 - **CodeCov Documentation**: [docs.codecov.com](https://docs.codecov.com/)
-- **Project CodeCov Dashboard**: [codecov.io/gh/allthingslinux/tux](https://codecov.io/gh/allthingslinux/tux)
+- **Project CodeCov Dashboard**: [codecov.io/gh/allthingslinux/awbot](https://codecov.io/gh/allthingslinux/awbot)
 
 ## 🤝 Contributing
 

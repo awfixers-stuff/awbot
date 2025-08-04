@@ -1,14 +1,14 @@
 [project]
-name = "tux"
-description = "Tux is an all in one bot for the All Things Linux discord server."
-authors = [{ name = "All Things Linux", email = "tux@allthingslinux.org" }]
+name = "awbot"
+description = "awbot is an all in one bot for the All Things Linux discord server."
+authors = [{ name = "All Things Linux", email = "awbot@allthingslinux.org" }]
 requires-python = ">=3.13.2,<3.14"
 readme = "README.md"
-urls = { repository = "https://github.com/allthingslinux/tux" }
+urls = { repository = "https://github.com/allthingslinux/awbot" }
 version = "0.0.0"
 
 [project.scripts]
-tux = "tux.cli:main"
+awbot = "awbot.cli:main"
 
 [build-system]
 requires = ["poetry-core>=2.0"]
@@ -16,7 +16,7 @@ build-backend = "poetry.core.masonry.api"
 
 
 [tool.poetry]
-packages = [{ include = "tux" }]
+packages = [{ include = "awbot" }]
 
 
 [tool.poetry.dependencies]
@@ -155,7 +155,7 @@ defineConstant = { DEBUG = true }
 enableReachabilityAnalysis = true
 exclude = ["__pypackages__", "_build", "examples", ".archive", "typings/**"]
 ignore = [".venv"]
-include = ["tux", "tests"]
+include = ["awbot", "tests"]
 stubPath = "typings"
 pythonPlatform = "Linux"
 pythonVersion = "3.13"
@@ -168,7 +168,7 @@ venv = ".venv"
 venvPath = "."
 
 [tool.coverage.run]
-source = ["tux"]
+source = ["awbot"]
 branch = true
 parallel = true
 omit = [
@@ -205,7 +205,7 @@ python_files = ["test_*.py", "*_test.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
 addopts = [
-    "--cov=tux",
+    "--cov=awbot",
     "--cov-report=term-missing",
     "--cov-report=html",
     "--cov-report=xml",

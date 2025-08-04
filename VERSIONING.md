@@ -1,6 +1,6 @@
 # Versioning
 
-This document outlines the versioning scheme, detection logic, and release process for the Tux project. Our system is designed to provide consistent and reliable versioning across development, testing, and production environments.
+This document outlines the versioning scheme, detection logic, and release process for the awbot project. Our system is designed to provide consistent and reliable versioning across development, testing, and production environments.
 
 ## Versioning Scheme
 
@@ -14,7 +14,7 @@ Release candidates can be denoted with suffixes (e.g., `1.0.0-rc1`).
 
 ## Version Detection
 
-The application version is determined dynamically at runtime. The `tux/__init__.py` module contains a robust detection mechanism that checks multiple sources in a specific order of priority. This ensures that the version is always available, regardless of the environment.
+The application version is determined dynamically at runtime. The `awbot/__init__.py` module contains a robust detection mechanism that checks multiple sources in a specific order of priority. This ensures that the version is always available, regardless of the environment.
 
 The `version` field in `pyproject.toml` is intentionally set to a static placeholder (`0.0.0`) because the true version is resolved dynamically.
 
@@ -22,9 +22,9 @@ The `version` field in `pyproject.toml` is intentionally set to a static placeho
 
 The version is sourced by trying the following methods in order, stopping at the first success:
 
-1. **`TUX_VERSION` Environment Variable**:
+1. **`awbot_VERSION` Environment Variable**:
     - **Usage**: A runtime override.
-    - **Example**: `TUX_VERSION=1.2.3-custom tux --dev start`
+    - **Example**: `awbot_VERSION=1.2.3-custom awbot --dev start`
     - **Priority**: Highest. If set, this value is always used.
 
 2. **`VERSION` File**:
@@ -40,7 +40,7 @@ The version is sourced by trying the following methods in order, stopping at the
     - **Note**: The leading `v` from tags (e.g., `v1.2.3`) is automatically removed.
 
 4. **Package Metadata (`importlib.metadata`)**:
-    - **Usage**: For when Tux is installed as a package from PyPI or a wheel file.
+    - **Usage**: For when awbot is installed as a package from PyPI or a wheel file.
     - **Mechanism**: Reads the version from the installed package's metadata.
 
 5. **Fallback to `"dev"`**:
@@ -73,7 +73,7 @@ Our Docker build process is designed to bake the version directly into the image
     docker build \
       --build-arg VERSION=$(git describe --tags --always --dirty | sed 's/^v//') \
       --target production \
-      -t your-registry/tux:latest .
+      -t your-registry/awbot:latest .
     ```
 
     You can also tag the image with the specific version:
@@ -84,8 +84,8 @@ Our Docker build process is designed to bake the version directly into the image
     docker build \
       --build-arg VERSION=$VERSION_TAG \
       --target production \
-      -t your-registry/tux:$VERSION_TAG \
-      -t your-registry/tux:latest .
+      -t your-registry/awbot:$VERSION_TAG \
+      -t your-registry/awbot:latest .
     ```
 
 This ensures that even in a detached production environment without Git, the application reports the correct version it was built from.

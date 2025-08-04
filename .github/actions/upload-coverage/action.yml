@@ -7,7 +7,7 @@ inputs:
   junit-file:
     description: Path to the JUnit XML file
     required: false
-    default: ''
+    default: ""
   flags:
     description: Codecov flags for categorization
     required: true
@@ -20,7 +20,7 @@ inputs:
   slug:
     description: Repository slug (owner/repo)
     required: false
-    default: allthingslinux/tux
+    default: allthingslinux/awbot
 runs:
   using: composite
   steps:

@@ -1,5 +1,5 @@
 {
-  "name": "Tux Development Container",
+  "name": "awbot Development Container",
   "dockerFile": "../Dockerfile",
   "context": "..",
   "runArgs": ["--init", "--env-file", ".env"],

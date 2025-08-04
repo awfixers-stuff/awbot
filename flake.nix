@@ -1,5 +1,5 @@
 {
-  description = "All Thing's Linux discord bot - Tux";
+  description = "All Thing's Linux discord bot - awbot";
 
   inputs = {
     nixpkgs = {
@@ -31,33 +31,11 @@
         "aarch64-darwin"
       ];
 
-      perSystem = { pkgs, self', system, ... }: {
+      perSystem = { pkgs, self', ... }: {
         devShells = {
-          default = self'.devShells.tux;
-          tux = pkgs.callPackage ./shell.nix { inherit pkgs self; };
+          default = self'.devShells.awbot;
+          awbot = pkgs.callPackage ./shell.nix { inherit pkgs self; };
         };
-
-        apps.envrc = {
-          type = "app";
-          program = self'.packages.envrc;
-        };
-
-        # Creates .envrc if does not exist
-        packages.envrc = pkgs.writeShellScriptBin "envrc" ''
-          echo
-
-          if [ ! -e ".envrc" ]; then
-            echo "Creating .envrc"
-            printf "use flake .\n\n\n" | cat - .env.example > .envrc
-            echo
-
-            echo "The directory is now set up for direnv usage."
-            echo
-          else
-            echo "Please delete .envrc if you wish to recreate it."
-            echo
-          fi
-        '';
       };
     };
 }

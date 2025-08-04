@@ -1,6 +1,6 @@
-# Contributing to Tux
+# Contributing to awbot
 
-Thank you for your interest in contributing to Tux! This guide details how to set up your environment, follow the development workflow, and submit your contributions.
+Thank you for your interest in contributing to awbot! This guide details how to set up your environment, follow the development workflow, and submit your contributions.
 
 We welcome contributions of all kinds, from bug fixes and feature implementations to documentation improvements.
 
@@ -33,29 +33,29 @@ Before you start, ensure you have:
 
 ## Development Setup
 
-Follow these steps to set up your local development environment. For more comprehensive details, refer to the main [DEVELOPER.md](https://github.com/allthingslinux/tux/blob/main/DEVELOPER.md) guide.
+Follow these steps to set up your local development environment. For more comprehensive details, refer to the main [DEVELOPER.md](https://github.com/allthingslinux/awbot/blob/main/DEVELOPER.md) guide.
 
 1. **Fork and clone the repository**
 
-    If you do not have direct write access to the `allthingslinux/tux` repository, you'll need to create your own copy (a "fork") on GitHub first. This allows you to make changes in your own workspace before proposing them to the main project via a Pull Request.
+    If you do not have direct write access to the `allthingslinux/awbot` repository, you'll need to create your own copy (a "fork") on GitHub first. This allows you to make changes in your own workspace before proposing them to the main project via a Pull Request.
 
-    * Navigate to the [Tux repository](https://github.com/allthingslinux/tux).
+    * Navigate to the [awbot repository](https://github.com/allthingslinux/awbot).
     * Click the "Fork" button in the upper right corner.
     * Choose your GitHub account as the owner.
     * Optionally, uncheck "Copy the `main` branch only" if you need all branches, though usually only the default branch is needed for contributions.
     * Click "Create fork".
 
-    Once your fork is created (e.g., `https://github.com/yourusername/tux`), clone it to your local machine:
+    Once your fork is created (e.g., `https://github.com/yourusername/awbot`), clone it to your local machine:
 
     ```bash
-    git clone https://github.com/yourusername/tux.git && cd tux
+    git clone https://github.com/yourusername/awbot.git && cd awbot
     ```
 
     **Configure `upstream` Remote:**
-    Add the original `allthingslinux/tux` repository as a remote named `upstream`. This makes it easier to fetch changes from the main project.
+    Add the original `allthingslinux/awbot` repository as a remote named `upstream`. This makes it easier to fetch changes from the main project.
 
     ```bash
-    git remote add upstream https://github.com/allthingslinux/tux.git
+    git remote add upstream https://github.com/allthingslinux/awbot.git
     
     # Verify the remotes
     git remote -v
@@ -106,7 +106,7 @@ Follow these steps to set up your local development environment. For more compre
 
     ```bash
     # Use --dev or rely on the default development mode
-    poetry run tux --dev db push
+    poetry run awbot --dev db push
     ```
 
 ## Development Workflow
@@ -160,20 +160,20 @@ Follow these steps to set up your local development environment. For more compre
 
 3. **Run Quality Checks**
 
-    Use the `tux` CLI to format, lint, and type-check your code. Running these locally ensures faster feedback before committing.
+    Use the `awbot` CLI to format, lint, and type-check your code. Running these locally ensures faster feedback before committing.
 
     ```bash
     # Format code using Ruff
-    poetry run tux dev format
+    poetry run awbot dev format
 
     # Lint code using Ruff
-    poetry run tux dev lint-fix
+    poetry run awbot dev lint-fix
 
     # Type-check code using Pyright
-    poetry run tux dev type-check
+    poetry run awbot dev type-check
 
     # Run all pre-commit checks (includes formatting, linting, etc.)
-    poetry run tux dev pre-commit
+    poetry run awbot dev pre-commit
     ```
 
     Fix any issues reported by these tools.
@@ -196,9 +196,9 @@ Follow these steps to set up your local development environment. For more compre
 
     `git push origin feature/your-descriptive-feature-name`
 
-    * Navigate to the [Tux repository](https://github.com/allthingslinux/tux) on GitHub.
-    * GitHub often shows a prompt to create a Pull Request from your recently pushed branch. You can also navigate to your fork (`https://github.com/yourusername/tux`) and click the "Contribute" button, then "Open a pull request".
-    * Ensure the base repository is `allthingslinux/tux` and the base branch is `main` (or the appropriate target branch).
+    * Navigate to the [awbot repository](https://github.com/allthingslinux/awbot) on GitHub.
+    * GitHub often shows a prompt to create a Pull Request from your recently pushed branch. You can also navigate to your fork (`https://github.com/yourusername/awbot`) and click the "Contribute" button, then "Open a pull request".
+    * Ensure the base repository is `allthingslinux/awbot` and the base branch is `main` (or the appropriate target branch).
     * Ensure the head repository is your fork and the compare branch is your feature branch.
     * Provide a clear title and description for your PR, linking any relevant issues (e.g., `Closes #123`). Explain *why* the changes are being made.
     * Click "Create pull request".
@@ -213,14 +213,14 @@ Follow these steps to set up your local development environment. For more compre
 
 ## Getting Help
 
-* Check the main [DEVELOPER.md](https://github.com/allthingslinux/tux/blob/main/DEVELOPER.md) guide for more in-depth information.
-* Review existing [Issues](https://github.com/allthingslinux/tux/issues).
+* Check the main [DEVELOPER.md](https://github.com/allthingslinux/awbot/blob/main/DEVELOPER.md) guide for more in-depth information.
+* Review existing [Issues](https://github.com/allthingslinux/awbot/issues).
 * Join the **atl.dev** [Discord server](https://discord.gg/gpmSjcjQxg) and ask in a relevant development channel.
 
 ## Code of Conduct
 
-All contributors are expected to adhere to the project's [Code of Conduct](https://github.com/allthingslinux/tux/blob/main/.github/CODE_OF_CONDUCT.md). Be respectful, constructive, and inclusive.
+All contributors are expected to adhere to the project's [Code of Conduct](https://github.com/allthingslinux/awbot/blob/main/.github/CODE_OF_CONDUCT.md). Be respectful, constructive, and inclusive.
 
 ## License
 
-By contributing to Tux, you agree that your contributions will be licensed under the [GNU General Public License v3.0](https://github.com/allthingslinux/tux/blob/main/LICENSE).
+By contributing to awbot, you agree that your contributions will be licensed under the [GNU General Public License v3.0](https://github.com/allthingslinux/awbot/blob/main/LICENSE).

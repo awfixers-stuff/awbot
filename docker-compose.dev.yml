@@ -3,22 +3,22 @@
 # ==============================================================================
 services:
   # ============================================================================
-  # TUX BOT SERVICE - Development Container
+  # awbot BOT SERVICE - Development Container
   # ============================================================================
-  # Purpose: Runs the Tux Discord bot in development mode with live reloading
+  # Purpose: Runs the awbot Discord bot in development mode with live reloading
   # Features: Code synchronization, automatic rebuilds, development tools
   # Performance: Higher resource limits for development workloads
   # ============================================================================
-  tux:
+  awbot:
     # CONTAINER IDENTIFICATION
     # Development-specific name to avoid conflicts with production containers
     # Clearly identifies this as a development instance
-    container_name: tux-dev
+    container_name: awbot-dev
 
     # IMAGE CONFIGURATION
     # Uses local development image built from dev stage of Dockerfile
     # Contains development tools, debugging utilities, and additional packages
-    image: tux:dev
+    image: awbot:dev
 
     # BUILD CONFIGURATION
     # Always builds from local source for development
@@ -37,7 +37,7 @@ services:
     command:
       - sh
       - -c
-      - exec poetry run tux --dev start
+      - exec poetry run awbot --dev start
 
     # DEVELOPMENT WORKFLOW CONFIGURATION
     # Docker BuildKit watch feature for live development
@@ -68,14 +68,14 @@ services:
             # Editor configurations (not needed in container)
             - .vscode/
             # Python cache files (regenerated automatically)
-            - '**/__pycache__/'
-            - '**/*.pyc'
+            - "**/__pycache__/"
+            - "**/*.pyc"
             # Log files (not needed in sync)
-            - '*.log'
+            - "*.log"
             # Editor temporary files
-            - '*.swp'
+            - "*.swp"
             - .*.swp
-            - '*~'
+            - "*~"
 
         # DEPENDENCY REBUILD TRIGGERS
         # Files that require full container rebuild when changed
@@ -100,17 +100,17 @@ services:
       # DEVELOPMENT CACHE VOLUME
       # Separate cache volume for development to avoid conflicts with production
       # Contains development-specific cache data and temporary files
-      - tux_dev_cache:/app/.cache
+      - awbot_dev_cache:/app/.cache
 
       # DEVELOPMENT TEMPORARY VOLUME
       # Separate temporary volume for development work
       # Used for development artifacts, debugging files, etc.
-      - tux_dev_temp:/app/temp
+      - awbot_dev_temp:/app/temp
 
       # USER HOME VOLUME
       # Single volume for all user cache/config directories (.cache, .npm, etc.)
       # Prevents read-only filesystem errors and covers all CLI tools
-      - tux_dev_user_home:/home/nonroot
+      - awbot_dev_user_home:/home/nonroot
 
     # ENVIRONMENT CONFIGURATION
     # Environment variables loaded from .env file
@@ -132,14 +132,14 @@ services:
         # RESOURCE LIMITS (Development)
         # Higher limits to accommodate development tools and processes
         limits:
-          memory: 1g  # Maximum 1GB RAM (double production)
-          cpus: '1.0'  # Maximum 1 full CPU core (double production)
+          memory: 1g # Maximum 1GB RAM (double production)
+          cpus: "1.0" # Maximum 1 full CPU core (double production)
 
         # RESOURCE RESERVATIONS (Development)
         # Higher reservations for better development performance
         reservations:
-          memory: 512m  # Guaranteed 512MB RAM (double production)
-          cpus: '0.5'  # Guaranteed 0.5 CPU cores (double production)
+          memory: 512m # Guaranteed 512MB RAM (double production)
+          cpus: "0.5" # Guaranteed 0.5 CPU cores (double production)
 
     # LOGGING CONFIGURATION
     # Same logging setup as production for consistency
@@ -150,8 +150,8 @@ services:
 
       # Log rotation to prevent development disk space issues
       options:
-        max-size: 10m  # Rotate logs when they reach 10MB
-        max-file: '3'  # Keep maximum 3 rotated log files
+        max-size: 10m # Rotate logs when they reach 10MB
+        max-file: "3" # Keep maximum 3 rotated log files
 # ==============================================================================
 # VOLUMES CONFIGURATION - DEVELOPMENT ENVIRONMENT
 # ==============================================================================
@@ -165,24 +165,24 @@ volumes:
   # Contains: Development API cache, debug cache, test data, etc.
   # Isolation: Completely separate from production cache
   # Lifecycle: Can be reset anytime for clean development environment
-  tux_dev_cache:
-    driver: local  # Local Docker volume driver (default)
+  awbot_dev_cache:
+    driver: local # Local Docker volume driver (default)
 
   # DEVELOPMENT TEMPORARY VOLUME
   # Stores development temporary files and artifacts
   # Contains: Debug files, development logs, test artifacts, etc.
   # Isolation: Separate from production temporary data
   # Lifecycle: Safe to clear for clean development state
-  tux_dev_temp:
-    driver: local  # Local Docker volume driver (default)
+  awbot_dev_temp:
+    driver: local # Local Docker volume driver (default)
 
   # DEVELOPMENT USER HOME VOLUME
   # Stores all user cache and config directories
   # Contains: .cache (Prisma), .npm, .config, and other CLI tool data
   # Isolation: Separate from production user data
   # Lifecycle: Persistent to avoid re-downloading tools and cache
-  tux_dev_user_home:
-    driver: local  # Local Docker volume driver (default)
+  awbot_dev_user_home:
+    driver: local # Local Docker volume driver (default)
 # ==============================================================================
 # DEVELOPMENT WORKFLOW BEST PRACTICES IMPLEMENTED
 # ==============================================================================
@@ -225,10 +225,10 @@ volumes:
 #    (Container rebuilds automatically)
 #
 # 4. Debug with shell access:
-#    docker-compose -f docker-compose.dev.yml exec tux bash
+#    docker-compose -f docker-compose.dev.yml exec awbot bash
 #
 # 5. View logs:
-#    docker-compose -f docker-compose.dev.yml logs -f tux
+#    docker-compose -f docker-compose.dev.yml logs -f awbot
 #
 # 6. Clean restart:
 #    docker-compose -f docker-compose.dev.yml down
@@ -236,21 +236,21 @@ volumes:
 #
 # ==============================================================================
 #
-# TUX CLI COMMANDS (Recommended):
+# awbot CLI COMMANDS (Recommended):
 # --------------------------------
-# Build:     poetry run tux --dev docker build
-# Start:     poetry run tux --dev docker up [-d|--build]
-# Logs:      poetry run tux --dev docker logs -f
-# Shell:     poetry run tux --dev docker shell
-# Stop:      poetry run tux --dev docker down
+# Build:     poetry run awbot --dev docker build
+# Start:     poetry run awbot --dev docker up [-d|--build]
+# Logs:      poetry run awbot --dev docker logs -f
+# Shell:     poetry run awbot --dev docker shell
+# Stop:      poetry run awbot --dev docker down
 #
 # Development workflow (from host):
-#   poetry run tux --dev docker exec tux "tux dev lint"
-#   poetry run tux --dev docker exec tux "pytest"
+#   poetry run awbot --dev docker exec awbot "awbot dev lint"
+#   poetry run awbot --dev docker exec awbot "pytest"
 #
 # Database (from host):
-#   poetry run tux --dev docker exec tux "tux db push"
-#   poetry run tux --dev docker exec tux "tux db migrate --name <name>"
+#   poetry run awbot --dev docker exec awbot "awbot db push"
+#   poetry run awbot --dev docker exec awbot "awbot db migrate --name <name>"
 #
 # DEVELOPMENT COMMANDS:
 # ---------------------
@@ -264,16 +264,16 @@ volumes:
 #   docker-compose -f docker-compose.dev.yml up --build
 #
 # Shell access:
-#   docker-compose -f docker-compose.dev.yml exec tux bash
+#   docker-compose -f docker-compose.dev.yml exec awbot bash
 #
 # Run linting:
-#   docker-compose -f docker-compose.dev.yml exec tux poetry run tux dev lint
+#   docker-compose -f docker-compose.dev.yml exec awbot poetry run awbot dev lint
 #
 # Run tests:
-#   docker-compose -f docker-compose.dev.yml exec tux poetry run pytest
+#   docker-compose -f docker-compose.dev.yml exec awbot poetry run pytest
 #
 # Database operations:
-#   docker-compose -f docker-compose.dev.yml exec tux poetry run tux --dev db push
+#   docker-compose -f docker-compose.dev.yml exec awbot poetry run awbot --dev db push
 #
 # Stop development:
 #   docker-compose -f docker-compose.dev.yml down

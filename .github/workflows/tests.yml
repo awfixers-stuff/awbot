@@ -1,8 +1,8 @@
 # ==============================================================================
-# TUX DISCORD BOT - COMPREHENSIVE TEST SUITE WORKFLOW
+# awbot DISCORD BOT - COMPREHENSIVE TEST SUITE WORKFLOW
 # ==============================================================================
 #
-# This workflow executes the complete test suite for the Tux Discord bot,
+# This workflow executes the complete test suite for the awbot Discord bot,
 # providing comprehensive testing across multiple Python versions with detailed
 # coverage reporting and result archival. Designed for reliability and
 # comprehensive validation of all code paths.
@@ -73,7 +73,7 @@ jobs:
     name: Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
     permissions:
-      contents: read    # Required for repository checkout and file access
+      contents: read # Required for repository checkout and file access
 
     # MATRIX TESTING STRATEGY
     # Tests multiple Python versions to ensure compatibility
@@ -81,8 +81,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version:                     # Supported Python versions
-          - '3.13'
+        python-version: # Supported Python versions
+          - "3.13"
     steps:
       # REPOSITORY CHECKOUT
       # Complete repository needed for comprehensive test execution
@@ -107,7 +107,8 @@ jobs:
       # Skips expensive test setup when no relevant files changed
       # Manual triggers always execute for debugging purposes
       - name: Skip if no Python/test changes
-        if: steps.python_changes.outputs.any_changed != 'true' && github.event_name
+        if:
+          steps.python_changes.outputs.any_changed != 'true' && github.event_name
           != 'workflow_dispatch'
         run: |
           echo "✅ No Python or test files changed, skipping tests"
@@ -117,20 +118,22 @@ jobs:
       # Uses centralized Python setup with matrix-specific Python versions
       # Configured for comprehensive testing with all dependency groups
       - name: Setup Python Environment
-        if: steps.python_changes.outputs.any_changed == 'true' || github.event_name
+        if:
+          steps.python_changes.outputs.any_changed == 'true' || github.event_name
           == 'workflow_dispatch'
         uses: ./.github/actions/setup-python
         with:
           python-version: ${{ matrix.python-version }}
           install-groups: dev,test,types
           cache-suffix: test
-          generate-prisma: 'true'
+          generate-prisma: "true"
 
       # TEST ENVIRONMENT CONFIGURATION
       # Creates isolated test environment with SQLite for CI safety
       # Prevents conflicts with production databases during testing
       - name: Create test environment file
-        if: steps.python_changes.outputs.any_changed == 'true' || github.event_name
+        if:
+          steps.python_changes.outputs.any_changed == 'true' || github.event_name
           == 'workflow_dispatch'
         uses: ./.github/actions/create-test-env
         with:
@@ -147,7 +150,8 @@ jobs:
       # Performance: Adaptive parallel/sequential execution based on test count
       # ========================================================================
       - name: Run unit tests with coverage
-        if: steps.python_changes.outputs.any_changed == 'true' || github.event_name
+        if:
+          steps.python_changes.outputs.any_changed == 'true' || github.event_name
           == 'workflow_dispatch'
         run: |
           echo "Running unit tests with coverage..."
@@ -157,10 +161,10 @@ jobs:
           TEST_COUNT=$(poetry run pytest --collect-only -q tests/ -m "not slow and not docker" 2>/dev/null | grep -c "test session starts" || echo "0")
           if [ "$TEST_COUNT" -gt 10 ]; then
             echo "Running $TEST_COUNT tests in parallel..."
-            poetry run pytest tests/ -v --cov=tux --cov-branch --cov-report=xml:coverage-unit.xml --cov-report=term-missing -m "not slow and not docker" --junitxml=junit-unit.xml -o junit_family=legacy --cov-fail-under=0 -n auto
+            poetry run pytest tests/ -v --cov=awbot --cov-branch --cov-report=xml:coverage-unit.xml --cov-report=term-missing -m "not slow and not docker" --junitxml=junit-unit.xml -o junit_family=legacy --cov-fail-under=0 -n auto
           else
             echo "Running $TEST_COUNT tests sequentially..."
-            poetry run pytest tests/ -v --cov=tux --cov-branch --cov-report=xml:coverage-unit.xml --cov-report=term-missing -m "not slow and not docker" --junitxml=junit-unit.xml -o junit_family=legacy --cov-fail-under=0
+            poetry run pytest tests/ -v --cov=awbot --cov-branch --cov-report=xml:coverage-unit.xml --cov-report=term-missing -m "not slow and not docker" --junitxml=junit-unit.xml -o junit_family=legacy --cov-fail-under=0
           fi
           echo "Unit test coverage generation completed"
 
@@ -184,7 +188,8 @@ jobs:
       # Uploads coverage data and test results to Codecov with specific flags
       # Robust configuration prevents CI failures from coverage upload issues
       - name: Upload unit test coverage and results to Codecov
-        if: steps.python_changes.outputs.any_changed == 'true' || github.event_name
+        if:
+          steps.python_changes.outputs.any_changed == 'true' || github.event_name
           == 'workflow_dispatch'
         uses: ./.github/actions/upload-coverage
         with:
@@ -207,11 +212,12 @@ jobs:
       # Checks for existence of database tests before execution
       # Prevents unnecessary setup and provides clear status reporting
       - name: Check for database tests
-        if: steps.python_changes.outputs.any_changed == 'true' || github.event_name
+        if:
+          steps.python_changes.outputs.any_changed == 'true' || github.event_name
           == 'workflow_dispatch'
         id: check_db_tests
         run: |
-          if find tests/tux/database/ -name "test_*.py" -type f | grep -q .; then
+          if find tests/awbot/database/ -name "test_*.py" -type f | grep -q .; then
             echo "has_tests=true" >> "$GITHUB_OUTPUT"
             echo "Database tests found"
           else
@@ -224,7 +230,8 @@ jobs:
       # Targets only database directory for precise scope
       - name: Run database tests with coverage
         if: steps.check_db_tests.outputs.has_tests == 'true'
-        run: poetry run pytest tests/tux/database/ -v --cov=tux/database --cov-branch
+        run:
+          poetry run pytest tests/awbot/database/ -v --cov=awbot/database --cov-branch
           --cov-report=xml:coverage-database.xml --junitxml=junit-database.xml -o
           junit_family=legacy --cov-fail-under=0
 
@@ -232,7 +239,8 @@ jobs:
       # Separate coverage tracking for database-specific functionality
       # Provides granular insights into data layer test coverage
       - name: Upload database test coverage and results to Codecov
-        if: steps.check_db_tests.outputs.has_tests == 'true' && hashFiles('./coverage-database.xml')
+        if:
+          steps.check_db_tests.outputs.has_tests == 'true' && hashFiles('./coverage-database.xml')
           != ''
         uses: ./.github/actions/upload-coverage
         with:
@@ -255,7 +263,8 @@ jobs:
       # Uses pytest marker system to identify integration tests
       # Prevents execution overhead when no integration tests exist
       - name: Check for integration tests
-        if: steps.python_changes.outputs.any_changed == 'true' || github.event_name
+        if:
+          steps.python_changes.outputs.any_changed == 'true' || github.event_name
           == 'workflow_dispatch'
         id: check_integration_tests
         run: |
@@ -283,15 +292,17 @@ jobs:
       # Provides realistic end-to-end testing without blocking development
       - name: Run integration tests with coverage
         if: steps.check_integration_tests.outputs.has_tests == 'true'
-        run: poetry run pytest tests/ -v --cov=tux --cov-branch --cov-report=xml:coverage-integration.xml
+        run:
+          poetry run pytest tests/ -v --cov=awbot --cov-branch --cov-report=xml:coverage-integration.xml
           -m "slow" --junitxml=junit-integration.xml -o junit_family=legacy --cov-fail-under=0
-        continue-on-error: true  # Don't fail CI if integration tests fail
+        continue-on-error: true # Don't fail CI if integration tests fail
 
       # INTEGRATION COVERAGE AND RESULTS REPORTING
       # Captures coverage from comprehensive end-to-end scenarios
       # Provides insights into real-world usage patterns
       - name: Upload integration test coverage and results to Codecov
-        if: steps.check_integration_tests.outputs.has_tests == 'true' && hashFiles('./coverage-integration.xml')
+        if:
+          steps.check_integration_tests.outputs.has_tests == 'true' && hashFiles('./coverage-integration.xml')
           != ''
         uses: ./.github/actions/upload-coverage
         with:

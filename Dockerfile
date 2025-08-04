@@ -1,5 +1,5 @@
 # ==============================================================================
-# TUX DISCORD BOT - MULTI-STAGE DOCKERFILE
+# awbot DISCORD BOT - MULTI-STAGE DOCKERFILE
 # ==============================================================================
 #
 # This Dockerfile uses a multi-stage build approach to create optimized images
@@ -15,8 +15,8 @@
 # USAGE:
 # ------
 # Development:  docker-compose -f docker-compose.dev.yml up
-# Production:   docker build --target production -t tux:latest .
-# With version: docker build --build-arg VERSION=$(git describe --tags --always --dirty | sed 's/^v//') -t tux:latest .
+# Production:   docker build --target production -t awbot:latest .
+# With version: docker build --build-arg VERSION=$(git describe --tags --always --dirty | sed 's/^v//') -t awbot:latest .
 #
 # SECURITY FEATURES:
 # ------------------
@@ -47,13 +47,13 @@ FROM python:3.13.5-slim@sha256:4c2cf9917bd1cbacc5e9b07320025bdb7cdf2df7b0ceaccb5
 
 # OCI Labels for container metadata and registry compliance
 # These labels provide important metadata for container registries and tools
-LABEL org.opencontainers.image.source="https://github.com/allthingslinux/tux" \
-      org.opencontainers.image.description="Tux - The all in one discord bot for the All Things Linux Community" \
+LABEL org.opencontainers.image.source="https://github.com/allthingslinux/awbot" \
+      org.opencontainers.image.description="awbot - The all in one discord bot for the All Things Linux Community" \
       org.opencontainers.image.licenses="GPL-3.0" \
       org.opencontainers.image.authors="All Things Linux" \
       org.opencontainers.image.vendor="All Things Linux" \
-      org.opencontainers.image.title="Tux" \
-      org.opencontainers.image.documentation="https://github.com/allthingslinux/tux/blob/main/README.md"
+      org.opencontainers.image.title="awbot" \
+      org.opencontainers.image.documentation="https://github.com/allthingslinux/awbot/blob/main/README.md"
 
 # Create non-root user early for security best practices
 # Using system user (no login shell) with fixed UID/GID for consistency
@@ -187,7 +187,7 @@ COPY prisma/ ./prisma/
 
 # 3. Main application code (changes more frequently)
 # The core bot code is most likely to change during development
-COPY tux/ ./tux/
+COPY awbot/ ./awbot/
 
 # 4. Root level files needed for installation
 # These include metadata and licensing information
@@ -275,7 +275,7 @@ RUN poetry install --only dev --no-root --no-directory && \
 # Development container startup command
 # WORKFLOW: Regenerates Prisma client and starts the bot in development mode
 # This ensures the database client is always up-to-date with schema changes
-CMD ["sh", "-c", "poetry run prisma generate && exec poetry run tux --dev start"]
+CMD ["sh", "-c", "poetry run prisma generate && exec poetry run awbot --dev start"]
 
 # ==============================================================================
 # PRODUCTION STAGE - Minimal Runtime Environment
@@ -290,13 +290,13 @@ FROM python:3.13.5-slim@sha256:4c2cf9917bd1cbacc5e9b07320025bdb7cdf2df7b0ceaccb5
 
 # Duplicate OCI labels for production image metadata
 # COMPLIANCE: Ensures production images have proper metadata for registries
-LABEL org.opencontainers.image.source="https://github.com/allthingslinux/tux" \
-      org.opencontainers.image.description="Tux - The all in one discord bot for the All Things Linux Community" \
+LABEL org.opencontainers.image.source="https://github.com/allthingslinux/awbot" \
+      org.opencontainers.image.description="awbot - The all in one discord bot for the All Things Linux Community" \
       org.opencontainers.image.licenses="GPL-3.0" \
       org.opencontainers.image.authors="All Things Linux" \
       org.opencontainers.image.vendor="All Things Linux" \
-      org.opencontainers.image.title="Tux" \
-      org.opencontainers.image.documentation="https://github.com/allthingslinux/tux/blob/main/README.md"
+      org.opencontainers.image.title="awbot" \
+      org.opencontainers.image.documentation="https://github.com/allthingslinux/awbot/blob/main/README.md"
 
 # Create non-root user (same as base stage)
 # SECURITY: Consistent user across all stages for permission compatibility
@@ -356,17 +356,17 @@ ENV VIRTUAL_ENV=/app/.venv \
 # SECURITY: --chown ensures files are owned by non-root user
 # EFFICIENCY: Only copies what's needed for runtime
 COPY --from=build --chown=nonroot:nonroot /app/.venv /app/.venv
-COPY --from=build --chown=nonroot:nonroot /app/tux /app/tux
+COPY --from=build --chown=nonroot:nonroot /app/awbot /app/awbot
 COPY --from=build --chown=nonroot:nonroot /app/prisma /app/prisma
 COPY --from=build --chown=nonroot:nonroot /app/config /app/config
 COPY --from=build --chown=nonroot:nonroot /app/pyproject.toml /app/pyproject.toml
 COPY --from=build --chown=nonroot:nonroot /app/VERSION /app/VERSION
 
 # Create convenient symlinks for Python and application binaries
-# USABILITY: Allows running 'python' and 'tux' commands without full paths
+# USABILITY: Allows running 'python' and 'awbot' commands without full paths
 # COMPATIBILITY: Maintains expected command locations for scripts and debugging
 RUN ln -sf /app/.venv/bin/python /usr/local/bin/python && \
-    ln -sf /app/.venv/bin/tux /usr/local/bin/tux
+    ln -sf /app/.venv/bin/awbot /usr/local/bin/awbot
 
 # Setup directories and permissions before Prisma setup
 # SECURITY: Ensures proper directory structure and permissions
@@ -425,7 +425,7 @@ RUN set -eux; \
     # Compile Python bytecode for performance optimization
     # PERFORMANCE: Pre-compiled bytecode improves startup time
     # Note: Some compilation errors are expected and ignored
-    /app/.venv/bin/python -m compileall -b -q /app/tux /app/.venv/lib/python3.13/site-packages/ 2>/dev/null || true; \
+    /app/.venv/bin/python -m compileall -b -q /app/awbot /app/.venv/lib/python3.13/site-packages/ 2>/dev/null || true; \
     \
     # Switch back to nonroot user for final ownership
     chown -R nonroot:nonroot /app /home/nonroot
@@ -437,7 +437,7 @@ USER nonroot
 # MONITORING: Allows Docker/Kubernetes to monitor application health
 # RELIABILITY: Enables automatic restart of unhealthy containers
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-    CMD python -c "import tux.cli.core; import tux.utils.env; print('Health check passed')" || exit 1
+    CMD python -c "import awbot.cli.core; import awbot.utils.env; print('Health check passed')" || exit 1
 
 # --interval=30s    : Check health every 30 seconds
 # --timeout=10s     : Allow 10 seconds for health check to complete
@@ -446,10 +446,10 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
 
 # Application entry point and default command
 # DEPLOYMENT: Configures how the container starts in production
-ENTRYPOINT ["tux"]
+ENTRYPOINT ["awbot"]
 CMD ["--prod", "start"]
 
-# ENTRYPOINT ["tux"]     : Always runs the tux command
+# ENTRYPOINT ["awbot"]     : Always runs the awbot command
 # CMD ["--prod", "start"]: Default arguments for production mode
 # FLEXIBILITY: CMD can be overridden, ENTRYPOINT cannot (security)
 
@@ -469,16 +469,16 @@ CMD ["--prod", "start"]
 # USAGE EXAMPLES:
 # ---------------
 # Build production image:
-#   docker build --target production -t tux:latest .
+#   docker build --target production -t awbot:latest .
 #
 # Build development image:
-#   docker build --target dev -t tux:dev .
+#   docker build --target dev -t awbot:dev .
 #
 # Build with devcontainer tools:
-#   docker build --target dev --build-arg DEVCONTAINER=1 -t tux:devcontainer .
+#   docker build --target dev --build-arg DEVCONTAINER=1 -t awbot:devcontainer .
 #
 # Run production container:
-#   docker run -d --name tux-bot --env-file .env tux:latest
+#   docker run -d --name awbot-bot --env-file .env awbot:latest
 #
 # Run development container:
 #   docker-compose -f docker-compose.dev.yml up

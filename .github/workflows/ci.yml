@@ -1,9 +1,9 @@
 # ==============================================================================
-# TUX DISCORD BOT - CONTINUOUS INTEGRATION WORKFLOW
+# awbot DISCORD BOT - CONTINUOUS INTEGRATION WORKFLOW
 # ==============================================================================
 #
 # This workflow handles code quality checks, linting, and validation for the
-# Tux Discord bot project. It runs on every push to main and pull requests to
+# awbot Discord bot project. It runs on every push to main and pull requests to
 # ensure code quality standards are maintained across the codebase.
 #
 # WORKFLOW FEATURES:
@@ -69,8 +69,8 @@ jobs:
     name: Python Type Checking
     runs-on: ubuntu-latest
     permissions:
-      contents: read          # Required for checkout
-      pull-requests: write   # Required for Pyright annotations
+      contents: read # Required for checkout
+      pull-requests: write # Required for Pyright annotations
     steps:
       # REPOSITORY CHECKOUT
       # Full history needed for accurate change detection
@@ -95,7 +95,8 @@ jobs:
       # Skips expensive Python setup if no relevant files changed
       # workflow_dispatch always runs for manual testing
       - name: Skip if no Python changes
-        if: steps.python_changes.outputs.any_changed != 'true' && github.event_name
+        if:
+          steps.python_changes.outputs.any_changed != 'true' && github.event_name
           != 'workflow_dispatch'
         run: |
           echo "✅ No Python files changed, skipping Python quality checks"
@@ -105,20 +106,22 @@ jobs:
       # Uses centralized Python setup for consistency and maintainability
       # Configured for CI/linting with dev and types dependency groups
       - name: Setup Python Environment
-        if: steps.python_changes.outputs.any_changed == 'true' || github.event_name
+        if:
+          steps.python_changes.outputs.any_changed == 'true' || github.event_name
           == 'workflow_dispatch'
         uses: ./.github/actions/setup-python
         with:
-          python-version: '3.13'
+          python-version: "3.13"
           install-groups: dev,types
           cache-suffix: ci
-          generate-prisma: 'true'
+          generate-prisma: "true"
 
       # STATIC TYPE CHECKING
       # Pyright provides comprehensive type checking for Python
       # Annotations appear directly in PR for developer feedback
       - name: Run Pyright type checker
-        if: steps.python_changes.outputs.any_changed == 'true' || github.event_name
+        if:
+          steps.python_changes.outputs.any_changed == 'true' || github.event_name
           == 'workflow_dispatch'
         uses: jakebailey/pyright-action@b5d50e5cde6547546a5c4ac92e416a8c2c1a1dfe # v2
         with:
@@ -149,7 +152,7 @@ jobs:
         uses: tj-actions/changed-files@ed68ef82c095e0d48ec87eccea555d944a631a4c # v46.0.5
         id: markdown_changes
         with:
-          files: '**/*.md'
+          files: "**/*.md"
 
       # EARLY TERMINATION FOR UNCHANGED DOCS
       # Skips Node.js setup and linting if no docs changed
@@ -214,7 +217,7 @@ jobs:
           # SHELL SCRIPT VALIDATION
           # Validates shell scripts for syntax and best practices
           - type: Shell Scripts
-            files: '**/*.sh,**/*.bash,scripts/**'
+            files: "**/*.sh,**/*.bash,scripts/**"
     steps:
       # REPOSITORY CHECKOUT
       # Shallow clone sufficient for infrastructure validation
@@ -241,7 +244,8 @@ jobs:
       # Verifies Docker Compose v2 availability on GitHub runners
       # Handles both v1 and v2 for compatibility
       - name: Set up Docker Compose v2
-        if: matrix.type == 'Docker' && steps.infra_changes.outputs.any_changed ==
+        if:
+          matrix.type == 'Docker' && steps.infra_changes.outputs.any_changed ==
           'true'
         run: |
           # Docker Compose v2 is pre-installed on GitHub runners
@@ -253,7 +257,8 @@ jobs:
       # Creates minimal .env file required for compose config validation
       # Contains placeholder values that satisfy syntax requirements
       - name: Create test environment for Docker Compose validation
-        if: matrix.type == 'Docker' && steps.infra_changes.outputs.any_changed ==
+        if:
+          matrix.type == 'Docker' && steps.infra_changes.outputs.any_changed ==
           'true'
         uses: ./.github/actions/create-test-env
         with:
@@ -265,7 +270,8 @@ jobs:
       # Runs Hadolint for Dockerfile best practices
       # Validates Docker Compose syntax with version compatibility
       - name: Run Docker linting
-        if: matrix.type == 'Docker' && steps.infra_changes.outputs.any_changed ==
+        if:
+          matrix.type == 'Docker' && steps.infra_changes.outputs.any_changed ==
           'true'
         run: |
           # DOCKERFILE LINTING WITH HADOLINT
@@ -297,7 +303,8 @@ jobs:
       # Uses actionlint for comprehensive workflow validation
       # Checks syntax, job dependencies, and GitHub Actions best practices
       - name: Run GitHub Actions linting
-        if: matrix.type == 'GitHub Actions' && steps.infra_changes.outputs.any_changed
+        if:
+          matrix.type == 'GitHub Actions' && steps.infra_changes.outputs.any_changed
           == 'true'
         uses: raven-actions/actionlint@3a24062651993d40fed1019b58ac6fbdfbf276cc # v2
         with:
@@ -307,7 +314,8 @@ jobs:
       # Uses ShellCheck for comprehensive shell script analysis
       # Focuses on scripts directory for project-specific scripts
       - name: Run Shell linting
-        if: matrix.type == 'Shell Scripts' && steps.infra_changes.outputs.any_changed
+        if:
+          matrix.type == 'Shell Scripts' && steps.infra_changes.outputs.any_changed
           == 'true'
         uses: ludeeus/action-shellcheck@master
         with:

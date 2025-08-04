@@ -1,7 +1,7 @@
 <!-- markdownlint-disable MD051 -->
-# Tux Docker Setup - Complete Guide
+# awbot Docker Setup - Complete Guide
 
-This comprehensive guide covers the optimized Docker setup for Tux, including performance improvements, testing strategies, security measures, and practical usage.
+This comprehensive guide covers the optimized Docker setup for awbot, including performance improvements, testing strategies, security measures, and practical usage.
 
 ## 📑 Table of Contents
 
@@ -79,30 +79,30 @@ All Docker operations are now available through a single, powerful script:
 
 ```bash
 # Start development environment
-poetry run tux --dev docker up
+poetry run awbot --dev docker up
 
 # Monitor logs
-poetry run tux --dev docker logs -f
+poetry run awbot --dev docker logs -f
 
 # Execute commands in container
-poetry run tux --dev docker exec tux bash
+poetry run awbot --dev docker exec awbot bash
 
 # Stop environment
-poetry run tux --dev docker down
+poetry run awbot --dev docker down
 ```
 
 ### **Production Deployment**
 
 ```bash
 # Build and start production
-poetry run tux docker build
-poetry run tux docker up -d
+poetry run awbot docker build
+poetry run awbot docker up -d
 
 # Check health status
-poetry run tux docker ps
+poetry run awbot docker ps
 
 # View logs
-poetry run tux docker logs -f
+poetry run awbot docker logs -f
 ```
 
 ## 🧪 Testing Strategy
@@ -297,14 +297,14 @@ jq '.performance | to_entries[] | "\(.key): \(.value.value) \(.value.unit)"' log
 
 ```bash
 # Development mode (default)
-poetry run tux --dev docker up
+poetry run awbot --dev docker up
 
 # Production mode
-poetry run tux --prod docker up
+poetry run awbot --prod docker up
 
 # CLI environment flags
-poetry run tux --dev docker build    # Development build
-poetry run tux --prod docker build   # Production build
+poetry run awbot --dev docker build    # Development build
+poetry run awbot --prod docker build   # Production build
 ```
 
 ### **Configuration Files**
@@ -320,21 +320,21 @@ poetry run tux --prod docker build   # Production build
 
 ```bash
 # Preview cleanup (safe)
-poetry run tux docker cleanup --dry-run
+poetry run awbot docker cleanup --dry-run
 
-# Remove tux resources only
-poetry run tux docker cleanup --force --volumes
+# Remove awbot resources only
+poetry run awbot docker cleanup --force --volumes
 
 # Standard test with cleanup
 ./scripts/docker-toolkit.sh test --force-clean
 
 # Monitor container resources
-./scripts/docker-toolkit.sh monitor tux-dev 120 10
+./scripts/docker-toolkit.sh monitor awbot-dev 120 10
 ```
 
 ### **Safety Guarantees**
 
-- ✅ **Only removes tux-related resources**
+- ✅ **Only removes awbot-related resources**
 - ✅ **Preserves system images** (python, ubuntu, etc.)
 - ✅ **Protects CI/CD environments**
 - ✅ **Specific pattern matching** (no wildcards)
@@ -346,20 +346,20 @@ poetry run tux docker cleanup --force --volumes
 python:*           # Base Python images
 ubuntu:*           # Ubuntu system images
 postgres:*         # Database images
-System containers  # Non-tux containers
+System containers  # Non-awbot containers
 System volumes     # System-created volumes
 ```
 
 ### **Safety Verification**
 
-Verify that cleanup operations only affect tux resources:
+Verify that cleanup operations only affect awbot resources:
 
 ```bash
 # Before cleanup - note system images
 docker images | grep -E "(python|ubuntu|alpine)" > /tmp/before_images.txt
 
 # Run safe cleanup
-poetry run tux docker cleanup --force --volumes
+poetry run awbot docker cleanup --force --volumes
 
 # After cleanup - verify system images still present
 docker images | grep -E "(python|ubuntu|alpine)" > /tmp/after_images.txt
@@ -419,13 +419,13 @@ healthcheck:
 
 ```bash
 # Health status
-poetry run tux docker health
+poetry run awbot docker health
 
 # Resource usage
-docker stats tux
+docker stats awbot
 
 # Container logs
-poetry run tux docker logs -f
+poetry run awbot docker logs -f
 
 # System overview
 docker system df
@@ -442,17 +442,17 @@ docker system df
 docker builder prune -f
 
 # Rebuild without cache
-poetry run tux docker build --no-cache
+poetry run awbot docker build --no-cache
 ```
 
 #### **Permission Issues**
 
 ```bash
 # Check container user
-docker run --rm tux:prod whoami  # Should output: nonroot
+docker run --rm awbot:prod whoami  # Should output: nonroot
 
 # Verify file permissions
-docker run --rm tux:prod ls -la /app
+docker run --rm awbot:prod ls -la /app
 ```
 
 #### **Performance Issues**
@@ -472,14 +472,14 @@ docker stats --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}"
 
 ```bash
 # Restart with rebuild
-poetry run tux --dev docker up --build
+poetry run awbot --dev docker up --build
 
 # Check sync logs
 docker compose -f docker-compose.dev.yml logs -f
 
 # Test file sync manually
 echo "# Test change $(date)" > test_file.py
-docker compose -f docker-compose.dev.yml exec tux test -f /app/test_file.py
+docker compose -f docker-compose.dev.yml exec awbot test -f /app/test_file.py
 rm test_file.py
 ```
 
@@ -487,26 +487,26 @@ rm test_file.py
 
 ```bash
 # Regenerate Prisma client
-poetry run tux --dev docker exec tux poetry run prisma generate
+poetry run awbot --dev docker exec awbot poetry run prisma generate
 
 # Check Prisma binaries
-poetry run tux --dev docker exec tux ls -la .venv/lib/python*/site-packages/prisma
+poetry run awbot --dev docker exec awbot ls -la .venv/lib/python*/site-packages/prisma
 
 # Test database operations
-poetry run tux --dev docker exec tux poetry run prisma db push --accept-data-loss
+poetry run awbot --dev docker exec awbot poetry run prisma db push --accept-data-loss
 ```
 
 #### **Memory and Resource Issues**
 
 ```bash
 # Monitor resource usage over time
-docker stats --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}" tux
+docker stats --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}" awbot
 
 # Test with lower memory limits
-docker run --rm --memory=256m tux:prod python -c "print('Memory test OK')"
+docker run --rm --memory=256m awbot:prod python -c "print('Memory test OK')"
 
 # Check for memory leaks
-docker run -d --name memory-test tux:prod sleep 60
+docker run -d --name memory-test awbot:prod sleep 60
 for i in {1..10}; do docker stats --no-stream memory-test; sleep 5; done
 docker stop memory-test && docker rm memory-test
 ```
@@ -515,7 +515,7 @@ docker stop memory-test && docker rm memory-test
 
 ```bash
 # Safe emergency cleanup
-poetry run tux docker cleanup --force --volumes
+poetry run awbot docker cleanup --force --volumes
 docker builder prune -f
 
 # Check system state
@@ -533,8 +533,8 @@ docker pull ubuntu:22.04
 
 ```bash
 # Build specific stage
-docker build --target dev -t tux:dev .
-docker build --target production -t tux:prod .
+docker build --target dev -t awbot:dev .
+docker build --target production -t awbot:prod .
 
 # Build with custom args
 docker build --build-arg DEVCONTAINER=1 .
@@ -551,7 +551,7 @@ docker buildx build --platform linux/amd64 .
 
 ```bash
 # Run vulnerability scan
-docker scout cves tux:prod --only-severity critical,high
+docker scout cves awbot:prod --only-severity critical,high
 ```
 
 ## 🎯 Best Practices
@@ -620,7 +620,7 @@ Regularly test these failure scenarios to ensure robustness:
 
 ```bash
 # Example: Test low memory handling
-docker run --rm --memory=10m tux:prod echo "Low memory test" || echo "✅ Handled gracefully"
+docker run --rm --memory=10m awbot:prod echo "Low memory test" || echo "✅ Handled gracefully"
 
 # Example: Test invalid config
 cp .env .env.backup

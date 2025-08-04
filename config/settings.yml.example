@@ -1,10 +1,10 @@
-# This is a example configuration file for Tux
+# This is a example configuration file for awbot
 # Change the values to your liking and rename the file to settings.yml
 
 BOT_INFO:
   PROD_PREFIX: "$"
   DEV_PREFIX: "~" # You can enable dev mode in .env
-  BOT_NAME: "Tux" # This may not apply everywhere, WIP (Best to keep it as Tux for now). Help command will be changed to be less Tux-specific if you change this.
+  BOT_NAME: "awbot" # This may not apply everywhere, WIP (Best to keep it as awbot for now). Help command will be changed to be less awbot-specific if you change this.
   HIDE_BOT_OWNER: false # Hide bot owner and sysadmin from help command
   # Available substitutions:
   # {member_count} - total member count of all guilds
@@ -23,25 +23,25 @@ BOT_INFO:
       {"type": "listening", "name": "mpd"},
       {"type": "watching", "name": "a vast field of grain"},
       {"type": "playing", "name": "i am calling about your car's extended warranty"},
-      {"type": "playing", "name": "SuperTuxKart"},
-      {"type": "playing", "name": "SuperTux 2"},
+      {"type": "playing", "name": "SuperawbotKart"},
+      {"type": "playing", "name": "Superawbot 2"},
       {"type": "watching", "name": "Gentoo compile..."},
       {"type": "watching", "name": "Brodie Robertson"},
       {"type": "listening", "name": "Terry Davis on YouTube"},
       {"type": "playing", "name": "with Puffy"},
       {"type": "watching", "name": "the stars"},
       {"type": "watching", "name": "VLC"},
-      {"type": "streaming", "name": "SuperTuxKart", "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"}
+      {"type": "streaming", "name": "SuperawbotKart", "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"}
     ]
 
 # This allows sysadmins to use the eval and jsk commands which can execute arbitrary code.
 # Do enable if:
-# - Tux is dockerized
+# - awbot is dockerized
 # - You trust your sysadmins with anything that the docker container can do (e.g if they already can access the host system)
 # - You are a small server
 # DO NOT ENABLE IF:
-# - Tux is not dockerized and you do not trust your sysadmins with the host system
-# - You are a large server and Tux has full permissions
+# - awbot is not dockerized and you do not trust your sysadmins with the host system
+# - You are a large server and awbot has full permissions
 # - You do not trust your sysadmins with anything that the docker container can do
 # - IF YOU ARE A MULTIPLE SERVER INSTANCE, DO NOT ENABLE IT FOR THE LOVE OF GOD
 # If you are not sure, do not enable this.

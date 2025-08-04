@@ -1,9 +1,9 @@
 # ==============================================================================
-# TUX DISCORD BOT - DOCKER BUILD & DEPLOYMENT WORKFLOW
+# awbot DISCORD BOT - DOCKER BUILD & DEPLOYMENT WORKFLOW
 # ==============================================================================
 #
 # This workflow handles Docker image building, testing, and deployment for the
-# Tux Discord bot. It provides secure, multi-platform container builds with
+# awbot Discord bot. It provides secure, multi-platform container builds with
 # comprehensive security scanning and optimized caching strategies for
 # production deployment and container registry management.
 #
@@ -64,7 +64,7 @@ on:
   # SCHEDULED MAINTENANCE
   # Monthly cleanup spread across different days to avoid resource conflicts
   schedule:
-    - cron: 0 2 15 * *   # Monthly cleanup on the 15th (spread from maintenance.yml)
+    - cron: 0 2 15 * * # Monthly cleanup on the 15th (spread from maintenance.yml)
 # CONCURRENCY MANAGEMENT
 # Prevents resource conflicts and manages parallel builds efficiently
 concurrency:
@@ -73,10 +73,10 @@ concurrency:
 # GLOBAL ENVIRONMENT VARIABLES
 # Centralized configuration for registry settings and build options
 env:
-  REGISTRY: ghcr.io                                 # GitHub Container Registry
-  IMAGE_NAME: ${{ github.repository }}              # Repository-based image name
-  DOCKER_BUILD_SUMMARY: true                       # Enable build summaries
-  DOCKER_BUILD_CHECKS_ANNOTATIONS: true            # Enable build annotations
+  REGISTRY: ghcr.io # GitHub Container Registry
+  IMAGE_NAME: ${{ github.repository }} # Repository-based image name
+  DOCKER_BUILD_SUMMARY: true # Enable build summaries
+  DOCKER_BUILD_CHECKS_ANNOTATIONS: true # Enable build annotations
 jobs:
   # ============================================================================
   # DOCKER BUILD VALIDATION - Pull Request Verification
@@ -93,7 +93,7 @@ jobs:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     permissions:
-      contents: read    # Required for repository checkout
+      contents: read # Required for repository checkout
     steps:
       # DOCKER BUILDX SETUP
       # Advanced Docker builder with enhanced caching and multi-platform support
@@ -120,12 +120,12 @@ jobs:
         uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
         timeout-minutes: 10
         with:
-          target: production        # Build production target for realistic validation
-          push: false              # Don't push to registry during validation
-          load: false             # Don't load image unless testing required
-          cache-from: type=gha    # Use GitHub Actions cache for faster builds
-          cache-to: type=gha,mode=max    # Update cache for future builds
-          tags: tux:pr-${{ github.event.number }}
+          target: production # Build production target for realistic validation
+          push: false # Don't push to registry during validation
+          load: false # Don't load image unless testing required
+          cache-from: type=gha # Use GitHub Actions cache for faster builds
+          cache-to: type=gha,mode=max # Update cache for future builds
+          tags: awbot:pr-${{ github.event.number }}
           build-args: |
             VERSION=${{ steps.version.outputs.version }}
             GIT_SHA=${{ steps.version.outputs.git_sha }}
@@ -133,14 +133,14 @@ jobs:
           # CONTAINER METADATA ANNOTATIONS
           # OCI-compliant image annotations for proper registry metadata
           annotations: |
-            org.opencontainers.image.title="Tux"
-            org.opencontainers.image.description="Tux - The all in one discord bot for the All Things Linux Community"
-            org.opencontainers.image.source="https://github.com/allthingslinux/tux"
+            org.opencontainers.image.title="awbot"
+            org.opencontainers.image.description="awbot - The all in one discord bot for the All Things Linux Community"
+            org.opencontainers.image.source="https://github.com/allthingslinux/awbot"
             org.opencontainers.image.licenses="GPL-3.0"
             org.opencontainers.image.authors="All Things Linux"
             org.opencontainers.image.vendor="All Things Linux"
             org.opencontainers.image.revision=${{ github.sha }}
-            org.opencontainers.image.documentation="https://github.com/allthingslinux/tux/blob/main/README.md"
+            org.opencontainers.image.documentation="https://github.com/allthingslinux/awbot/blob/main/README.md"
 
       # VALIDATION COMPLETION STATUS
       # Provides clear feedback on validation success
@@ -163,15 +163,15 @@ jobs:
     # Skips pull requests to prevent unnecessary deployments
     # Waits for validation to complete before proceeding
     if: github.event_name != 'pull_request'
-    needs:             # Always wait for validation
+    needs: # Always wait for validation
       - validate
     runs-on: ubuntu-latest
     permissions:
-      contents: read           # Repository access for build context
-      packages: write         # Container registry push permissions
-      security-events: write  # Security scanning result upload
-      actions: read          # Actions cache access
-      id-token: write        # OIDC token for SLSA provenance
+      contents: read # Repository access for build context
+      packages: write # Container registry push permissions
+      security-events: write # Security scanning result upload
+      actions: read # Actions cache access
+      id-token: write # OIDC token for SLSA provenance
 
     # OUTPUT CONFIGURATION
     # Provides build outputs for downstream jobs (security scanning, cleanup)
@@ -245,14 +245,14 @@ jobs:
             type=ref,event=tag       # Version tags for releases
             type=sha                 # SHA-based tags for traceability
           labels: |
-            org.opencontainers.image.title="Tux"
-            org.opencontainers.image.description="Tux - The all in one discord bot for the All Things Linux Community"
+            org.opencontainers.image.title="awbot"
+            org.opencontainers.image.description="awbot - The all in one discord bot for the All Things Linux Community"
             org.opencontainers.image.source="https://github.com/${{ github.repository }}"
             org.opencontainers.image.revision=${{ github.sha }}
             org.opencontainers.image.licenses="GPL-3.0"
             org.opencontainers.image.authors="All Things Linux"
             org.opencontainers.image.vendor="All Things Linux"
-            org.opencontainers.image.documentation="https://github.com/allthingslinux/tux/blob/main/README.md"
+            org.opencontainers.image.documentation="https://github.com/allthingslinux/awbot/blob/main/README.md"
 
       # PRODUCTION BUILD AND DEPLOYMENT
       # Multi-platform build with advanced security and performance features
@@ -266,8 +266,8 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha     # Use GitHub Actions cache
-          cache-to: type=gha,mode=max    # Update cache comprehensively
+          cache-from: type=gha # Use GitHub Actions cache
+          cache-to: type=gha,mode=max # Update cache comprehensively
           # CONDITIONAL MULTI-PLATFORM BUILDS
           # ARM64 builds only for tagged releases to save resources
           platforms: ${{ (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/') && contains(github.ref, 'v')) && 'linux/amd64,linux/arm64' || 'linux/amd64' }}
@@ -286,10 +286,10 @@ jobs:
       # Smoke test to verify image functionality and dependency availability
       - name: Test pushed image
         run: |
-          docker run --rm --name tux-prod-test \
+          docker run --rm --name awbot-prod-test \
             --entrypoint python \
             "$(echo '${{ steps.meta.outputs.tags }}' | head -1)" \
-            -c "import tux; import sqlite3; import asyncio; print('🔍 Testing production image...'); print('✅ Bot imports successfully'); print('✅ Dependencies available'); conn = sqlite3.connect(':memory:'); conn.close(); print('✅ Database connectivity working'); print('🎉 Production image verified!')"
+            -c "import awbot; import sqlite3; import asyncio; print('🔍 Testing production image...'); print('✅ Bot imports successfully'); print('✅ Dependencies available'); conn = sqlite3.connect(':memory:'); conn.close(); print('✅ Database connectivity working'); print('🎉 Production image verified!')"
 
   # ============================================================================
   # SECURITY SCANNING - Vulnerability Detection and Reporting
@@ -307,7 +307,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     permissions:
-      security-events: write    # Required for SARIF upload
+      security-events: write # Required for SARIF upload
     steps:
       # REPOSITORY CHECKOUT
       # Required for Dockerfile analysis and security context
@@ -320,7 +320,8 @@ jobs:
       # Gets the first (primary) image tag for security scanning
       - name: Get first image tag
         id: first_tag
-        run: echo "image=$(echo '${{ needs.build.outputs.image }}' | head -1)" >>
+        run:
+          echo "image=$(echo '${{ needs.build.outputs.image }}' | head -1)" >>
           "$GITHUB_OUTPUT"
 
       # TRIVY CACHE OPTIMIZATION
@@ -340,10 +341,10 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: ${{ steps.first_tag.outputs.image }}
-          format: sarif              # GitHub Security compatible format
+          format: sarif # GitHub Security compatible format
           output: trivy-results.sarif
-          severity: CRITICAL,HIGH    # Focus on actionable vulnerabilities
-          scanners: vuln            # Vulnerability scanning only
+          severity: CRITICAL,HIGH # Focus on actionable vulnerabilities
+          scanners: vuln # Vulnerability scanning only
 
       # SECURITY RESULTS INTEGRATION
       # Uploads scan results to GitHub Security tab for centralized management
@@ -364,30 +365,32 @@ jobs:
     name: Registry Cleanup
     # EXECUTION CONDITIONS
     # Runs on scheduled maintenance or manual trigger only
-    if: github.event_name != 'pull_request' && (github.event_name == 'schedule' ||
+    if:
+      github.event_name != 'pull_request' && (github.event_name == 'schedule' ||
       github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
     permissions:
-      packages: write    # Required for container registry management
+      packages: write # Required for container registry management
     steps:
       # AUTOMATED VERSION CLEANUP
       # Removes old container versions while preserving recent releases
       - name: Delete old container versions
         uses: actions/delete-package-versions@e5bc658cc4c965c472efe991f8beea3981499c55 # v5
         with:
-          package-name: tux                         # Target package name
-          package-type: container                   # Container images only
-          min-versions-to-keep: 10                 # Safety buffer for rollbacks
-          delete-only-untagged-versions: false     # Clean tagged versions too
+          package-name: awbot # Target package name
+          package-type: container # Container images only
+          min-versions-to-keep: 10 # Safety buffer for rollbacks
+          delete-only-untagged-versions: false # Clean tagged versions too
 
       # LEGACY BUILDCACHE CLEANUP
       # Cleans up any remaining build cache artifacts from previous configurations
       - name: Delete buildcache images
-        continue-on-error: true    # Non-critical cleanup operation
+        continue-on-error: true # Non-critical cleanup operation
         run: |
           echo "Cleaning up any remaining buildcache images..."
           # This will help clean up existing buildcache images
           # After our fix, no new buildcache images should be created
+
 # ==============================================================================
 # DOCKER WORKFLOW BEST PRACTICES IMPLEMENTED
 # ==============================================================================
@@ -421,7 +424,7 @@ jobs:
 #
 # CONTAINER REGISTRY STRUCTURE:
 # ------------------------------
-# ghcr.io/allthingslinux/tux:
+# ghcr.io/allthingslinux/awbot:
 #   ├── latest                    # Latest main branch build
 #   ├── main                      # Main branch builds
 #   ├── v1.0.0, v1.1.0, etc.    # Release versions

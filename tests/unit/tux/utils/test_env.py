@@ -1,4 +1,4 @@
-"""Tests for tux.utils.env module."""
+"""Tests for awbot.utils.env module."""
 
 import os
 import tempfile
@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 import pytest
 
-from tux.utils.env import (
+from awbot.utils.env import (
     Config,
     ConfigurationError,
     EnvError,
@@ -98,7 +98,7 @@ class TestConfig:
         """Test Config initialization without loading dotenv."""
         config = Config(load_env=False)
         expected_root = Path(__file__).parent.parent.parent.parent
-        if expected_root.parent.name == "tux":
+        if expected_root.parent.name == "awbot":
             expected_root = expected_root.parent
         assert config.workspace_root == expected_root
         assert config.dotenv_path == config.workspace_root / ".env"
@@ -184,7 +184,7 @@ class TestConfig:
 
             config = Config(dotenv_path=Path(tmp.name), load_env=False)
 
-            with patch("tux.utils.env.set_key") as mock_set_key:
+            with patch("awbot.utils.env.set_key") as mock_set_key:
                 config.set("NEW_VAR", "new_value", persist=True)
                 mock_set_key.assert_called_once_with(Path(tmp.name), "NEW_VAR", "new_value")
 

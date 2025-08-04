@@ -21,10 +21,10 @@ class TestDockerIntegration:
         assert toolkit.check_docker(), "Docker should be available for tests"
 
     def test_safe_resource_detection(self, toolkit: DockerToolkit) -> None:
-        """Test that the toolkit can safely detect Tux resources."""
+        """Test that the toolkit can safely detect awbot resources."""
         # Test each resource type
         for resource_type in ["images", "containers", "volumes", "networks"]:
-            resources = toolkit.get_tux_resources(resource_type)
+            resources = toolkit.get_awbot_resources(resource_type)
             assert isinstance(resources, list), f"{resource_type} should return a list"
 
     def test_logs_directory_creation(self, toolkit: DockerToolkit) -> None:
@@ -97,16 +97,16 @@ class TestDockerSafety:
 
     def test_resource_pattern_safety(self, toolkit: DockerToolkit) -> None:
         """Test that only safe resource patterns are matched."""
-        # These should be detected as Tux resources
+        # These should be detected as awbot resources
         safe_resources = [
-            "tux:latest",
-            "tux:test-dev",
-            "ghcr.io/allthingslinux/tux:main",
-            "tux-dev",
-            "tux_dev_cache",
+            "awbot:latest",
+            "awbot:test-dev",
+            "ghcr.io/allthingslinux/awbot:main",
+            "awbot-dev",
+            "awbot_dev_cache",
         ]
 
-        # These should NOT be detected as Tux resources
+        # These should NOT be detected as awbot resources
         unsafe_resources = [
             "python:3.13",
             "ubuntu:22.04",
@@ -117,10 +117,10 @@ class TestDockerSafety:
 
         # Test patterns (copied from docker_toolkit for self-contained testing)
         test_patterns = {
-            "images": [r"^tux:.*", r"^ghcr\.io/allthingslinux/tux:.*"],
-            "containers": [r"^(tux(-dev|-prod)?|memory-test|resource-test)$"],
-            "volumes": [r"^tux(_dev)?_(cache|temp)$"],
-            "networks": [r"^tux_default$", r"^tux-.*"],
+            "images": [r"^awbot:.*", r"^ghcr\.io/allthingslinux/awbot:.*"],
+            "containers": [r"^(awbot(-dev|-prod)?|memory-test|resource-test)$"],
+            "volumes": [r"^awbot(_dev)?_(cache|temp)$"],
+            "networks": [r"^awbot_default$", r"^awbot-.*"],
         }
 
         for resource_type, patterns in test_patterns.items():

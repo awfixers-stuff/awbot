@@ -1,8 +1,8 @@
-# Developer Guide: Tux
+# Developer Guide: awbot
 
-Welcome to the Tux developer documentation!
+Welcome to the awbot developer documentation!
 
-This area provides in-depth information for developers working on Tux, beyond the initial setup and contribution workflow.
+This area provides in-depth information for developers working on awbot, beyond the initial setup and contribution workflow.
 
 ## Getting Started & Contributing
 
@@ -17,15 +17,15 @@ Explore the following pages for more detailed information on specific developmen
 * **[Local Development](./docs/content/dev/local_development.md)**
   * Running the bot locally.
   * Understanding the hot reloading mechanism.
-* **[Tux CLI Usage](./docs/content/dev/cli/index.md)**
+* **[awbot CLI Usage](./docs/content/dev/cli/index.md)**
   * Understanding development vs. production modes (`--dev`, `--prod`).
   * Overview of command groups (`bot`, `db`, `dev`, `docker`).
 * **[Code Coverage](./docs/content/dev/coverage.md)**
   * Running tests with coverage tracking.
   * Generating and interpreting coverage reports.
-  * Using `tux test run`, `tux test coverage`, and related commands.
+  * Using `awbot test run`, `awbot test coverage`, and related commands.
 * **[Database Management](./docs/content/dev/database.md)**
-  * Detailed usage of `tux db` commands (push, migrate, generate, pull, reset).
+  * Detailed usage of `awbot db` commands (push, migrate, generate, pull, reset).
   * Working with Prisma migrations.
 * **[Database Controller Patterns](./docs/content/dev/database_patterns.md)**
   * Using controllers for CRUD, transactions, relations.

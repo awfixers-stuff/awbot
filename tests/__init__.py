@@ -1,1 +1,1 @@
-"""Test suite for Tux."""
+"""Test suite for awbot."""

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""Tux Docker Toolkit - Unified Docker Management and Testing Suite.
+"""awbot Docker Toolkit - Unified Docker Management and Testing Suite.
 
 Consolidates all Docker operations: testing, monitoring, and management.
 Converted from bash to Python for better maintainability and integration.
@@ -21,27 +21,27 @@ from loguru import logger
 
 # Script version and configuration
 TOOLKIT_VERSION = "2.0.0"
-DEFAULT_CONTAINER_NAME = "tux-dev"
+DEFAULT_CONTAINER_NAME = "awbot-dev"
 LOGS_DIR = Path("logs")
 
 # Safety configuration - only these Docker resource patterns are allowed for cleanup
 SAFE_RESOURCE_PATTERNS = {
     "images": [
-        r"^tux:.*",
-        r"^ghcr\.io/allthingslinux/tux:.*",
-        r"^tux:(test|fresh|cached|switch-test|regression|perf-test)-.*",
-        r"^tux:(multiplatform|security)-test$",
+        r"^awbot:.*",
+        r"^ghcr\.io/allthingslinux/awbot:.*",
+        r"^awbot:(test|fresh|cached|switch-test|regression|perf-test)-.*",
+        r"^awbot:(multiplatform|security)-test$",
     ],
     "containers": [
-        r"^(tux(-dev|-prod)?|memory-test|resource-test)$",
-        r"^tux:(test|fresh|cached|switch-test|regression|perf-test)-.*",
+        r"^(awbot(-dev|-prod)?|memory-test|resource-test)$",
+        r"^awbot:(test|fresh|cached|switch-test|regression|perf-test)-.*",
     ],
     "volumes": [
-        r"^tux(_dev)?_(cache|temp)$",
+        r"^awbot(_dev)?_(cache|temp)$",
     ],
     "networks": [
-        r"^tux_default$",
-        r"^tux-.*",
+        r"^awbot_default$",
+        r"^awbot-.*",
     ],
 }
 
@@ -136,8 +136,8 @@ class DockerToolkit:
                 raise
             raise
 
-    def get_tux_resources(self, resource_type: str) -> list[str]:
-        """Get list of Tux-related Docker resources safely."""
+    def get_awbot_resources(self, resource_type: str) -> list[str]:
+        """Get list of awbot-related Docker resources safely."""
         if resource_type not in SAFE_RESOURCE_PATTERNS:
             return []
 
@@ -160,23 +160,23 @@ class DockerToolkit:
             patterns = SAFE_RESOURCE_PATTERNS[resource_type]
             compiled_patterns = [re.compile(pattern, re.IGNORECASE) for pattern in patterns]
 
-            tux_resources: list[str] = []
+            awbot_resources: list[str] = []
             for resource in all_resources:
                 for pattern_regex in compiled_patterns:
                     if pattern_regex.match(resource):
-                        tux_resources.append(resource)
+                        awbot_resources.append(resource)
                         break
         except (subprocess.CalledProcessError, subprocess.TimeoutExpired):
             return []
         else:
-            return tux_resources
+            return awbot_resources
 
     def safe_cleanup(self, cleanup_type: str = "basic", force: bool = False) -> None:
-        """Perform safe cleanup of Tux-related Docker resources."""
-        logger.info(f"Performing {cleanup_type} cleanup (tux resources only)...")
+        """Perform safe cleanup of awbot-related Docker resources."""
+        logger.info(f"Performing {cleanup_type} cleanup (awbot resources only)...")
 
         # Remove test containers
-        test_patterns = ["tux:test-", "tux:quick-", "tux:perf-test-", "memory-test", "resource-test"]
+        test_patterns = ["awbot:test-", "awbot:quick-", "awbot:perf-test-", "memory-test", "resource-test"]
         for pattern in test_patterns:
             with contextlib.suppress(Exception):
                 result = self.safe_run(
@@ -191,23 +191,23 @@ class DockerToolkit:
 
         # Remove test images
         test_images = [
-            "tux:test-dev",
-            "tux:test-prod",
-            "tux:quick-dev",
-            "tux:quick-prod",
-            "tux:perf-test-dev",
-            "tux:perf-test-prod",
+            "awbot:test-dev",
+            "awbot:test-prod",
+            "awbot:quick-dev",
+            "awbot:quick-prod",
+            "awbot:perf-test-dev",
+            "awbot:perf-test-prod",
         ]
         for image in test_images:
             with contextlib.suppress(Exception):
                 self.safe_run(["docker", "rmi", image], check=False, capture_output=True)
 
         if cleanup_type == "aggressive" or force:
-            logger.warning("Performing aggressive cleanup (SAFE: only tux-related resources)")
+            logger.warning("Performing aggressive cleanup (SAFE: only awbot-related resources)")
 
-            # Remove tux project images
-            tux_images = self.get_tux_resources("images")
-            for image in tux_images:
+            # Remove awbot project images
+            awbot_images = self.get_awbot_resources("images")
+            for image in awbot_images:
                 with contextlib.suppress(Exception):
                     self.safe_run(["docker", "rmi", image], check=False, capture_output=True)
 
@@ -249,7 +249,7 @@ class DockerToolkit:
 @click.option("--testing-mode", is_flag=True, help="Enable testing mode (graceful error handling)")
 @click.pass_context
 def cli(ctx: click.Context, testing_mode: bool) -> None:
-    """Tux Docker Toolkit - Unified Docker Management and Testing Suite."""
+    """awbot Docker Toolkit - Unified Docker Management and Testing Suite."""
     ctx.ensure_object(dict)
     ctx.obj["toolkit"] = DockerToolkit(testing_mode=testing_mode)
 
@@ -287,7 +287,7 @@ def quick(ctx: click.Context) -> int:  # noqa: PLR0915
     timer.start()
     try:
         toolkit.safe_run(
-            ["docker", "build", "--target", "dev", "-t", "tux:quick-dev", "."],
+            ["docker", "build", "--target", "dev", "-t", "awbot:quick-dev", "."],
             capture_output=True,
             timeout=180,
         )
@@ -298,7 +298,7 @@ def quick(ctx: click.Context) -> int:  # noqa: PLR0915
     timer.start()
     try:
         toolkit.safe_run(
-            ["docker", "build", "--target", "production", "-t", "tux:quick-prod", "."],
+            ["docker", "build", "--target", "production", "-t", "awbot:quick-prod", "."],
             capture_output=True,
             timeout=180,
         )
@@ -310,7 +310,7 @@ def quick(ctx: click.Context) -> int:  # noqa: PLR0915
     logger.info("🏃 Testing container execution...")
     try:
         toolkit.safe_run(
-            ["docker", "run", "--rm", "--entrypoint=", "tux:quick-prod", "python", "--version"],
+            ["docker", "run", "--rm", "--entrypoint=", "awbot:quick-prod", "python", "--version"],
             capture_output=True,
             timeout=30,
         )
@@ -322,7 +322,7 @@ def quick(ctx: click.Context) -> int:  # noqa: PLR0915
     logger.info("🔒 Testing security...")
     try:
         result = toolkit.safe_run(
-            ["docker", "run", "--rm", "--entrypoint=", "tux:quick-prod", "whoami"],
+            ["docker", "run", "--rm", "--entrypoint=", "awbot:quick-prod", "whoami"],
             capture_output=True,
             text=True,
             timeout=30,
@@ -361,7 +361,7 @@ def quick(ctx: click.Context) -> int:  # noqa: PLR0915
                 "--entrypoint=",
                 "-v",
                 "/tmp:/app/temp",
-                "tux:quick-dev",
+                "awbot:quick-dev",
                 "test",
                 "-d",
                 "/app/temp",
@@ -375,7 +375,7 @@ def quick(ctx: click.Context) -> int:  # noqa: PLR0915
 
     # Cleanup
     with contextlib.suppress(Exception):
-        toolkit.safe_run(["docker", "rmi", "tux:quick-dev", "tux:quick-prod"], check=False, capture_output=True)
+        toolkit.safe_run(["docker", "rmi", "awbot:quick-dev", "awbot:quick-prod"], check=False, capture_output=True)
 
     # Summary
     logger.info("")
@@ -470,8 +470,8 @@ def test(ctx: click.Context, no_cache: bool, force_clean: bool) -> int:  # noqa:
             return duration
 
     # Run build tests
-    run_build_test("Development", "dev", "tux:test-dev")
-    run_build_test("Production", "production", "tux:test-prod")
+    run_build_test("Development", "dev", "awbot:test-dev")
+    run_build_test("Production", "production", "awbot:test-prod")
 
     # Test container startup time
     logger.info("Testing container startup time...")
@@ -480,7 +480,7 @@ def test(ctx: click.Context, no_cache: bool, force_clean: bool) -> int:  # noqa:
 
     try:
         result = toolkit.safe_run(
-            ["docker", "run", "-d", "--rm", "--entrypoint=", "tux:test-prod", "sleep", "30"],
+            ["docker", "run", "-d", "--rm", "--entrypoint=", "awbot:test-prod", "sleep", "30"],
             capture_output=True,
             text=True,
             timeout=30,
@@ -514,7 +514,7 @@ def test(ctx: click.Context, no_cache: bool, force_clean: bool) -> int:  # noqa:
     logger.info("Testing security constraints...")
     try:
         result = toolkit.safe_run(
-            ["docker", "run", "--rm", "--entrypoint=", "tux:test-prod", "whoami"],
+            ["docker", "run", "--rm", "--entrypoint=", "awbot:test-prod", "whoami"],
             capture_output=True,
             text=True,
             timeout=30,
@@ -539,7 +539,7 @@ def test(ctx: click.Context, no_cache: bool, force_clean: bool) -> int:  # noqa:
                 "run",
                 "--rm",
                 "--entrypoint=",
-                "tux:test-prod",
+                "awbot:test-prod",
                 "sh",
                 "-c",
                 "for i in $(seq 1 100); do echo 'test content' > /app/temp/test_$i.txt; done; rm /app/temp/test_*.txt",
@@ -567,7 +567,7 @@ def test(ctx: click.Context, no_cache: bool, force_clean: bool) -> int:  # noqa:
                 "run",
                 "--rm",
                 "--entrypoint=",
-                "tux:test-dev",
+                "awbot:test-dev",
                 "python",
                 "-c",
                 "import sys; print('Python validation:', sys.version)",
@@ -652,12 +652,12 @@ def check_performance_thresholds(metrics: dict[str, Any], toolkit: DockerToolkit
 
 
 @cli.command()
-@click.option("--volumes", is_flag=True, help="Also remove Tux volumes")
+@click.option("--volumes", is_flag=True, help="Also remove awbot volumes")
 @click.option("--force", is_flag=True, help="Force removal without confirmation")
 @click.option("--dry-run", is_flag=True, help="Show what would be removed without removing")
 @click.pass_context
 def cleanup(ctx: click.Context, volumes: bool, force: bool, dry_run: bool) -> int:  # noqa: PLR0915
-    """Clean up Tux-related Docker resources safely."""
+    """Clean up awbot-related Docker resources safely."""
     toolkit: DockerToolkit = ctx.obj["toolkit"]
 
     logger.info("🧹 Safe Docker Cleanup")
@@ -667,16 +667,16 @@ def cleanup(ctx: click.Context, volumes: bool, force: bool, dry_run: bool) -> in
         logger.info("🔍 DRY RUN MODE - No resources will actually be removed")
         logger.info("")
 
-    logger.info("Scanning for tux-related Docker resources...")
+    logger.info("Scanning for awbot-related Docker resources...")
 
-    # Get Tux-specific resources safely
-    tux_containers = toolkit.get_tux_resources("containers")
-    tux_images = toolkit.get_tux_resources("images")
-    tux_volumes = toolkit.get_tux_resources("volumes") if volumes else []
-    tux_networks = toolkit.get_tux_resources("networks")
+    # Get awbot-specific resources safely
+    awbot_containers = toolkit.get_awbot_resources("containers")
+    awbot_images = toolkit.get_awbot_resources("images")
+    awbot_volumes = toolkit.get_awbot_resources("volumes") if volumes else []
+    awbot_networks = toolkit.get_awbot_resources("networks")
 
     # Filter out special networks
-    tux_networks = [net for net in tux_networks if net not in ["bridge", "host", "none"]]
+    awbot_networks = [net for net in awbot_networks if net not in ["bridge", "host", "none"]]
 
     # Display what will be cleaned
     def log_resource_list(resource_type: str, resources: list[str]) -> None:
@@ -686,24 +686,24 @@ def cleanup(ctx: click.Context, volumes: bool, force: bool, dry_run: bool) -> in
                 logger.info(f"  - {resource}")
             logger.info("")
 
-    log_resource_list("Containers", tux_containers)
-    log_resource_list("Images", tux_images)
-    log_resource_list("Volumes", tux_volumes)
-    log_resource_list("Networks", tux_networks)
+    log_resource_list("Containers", awbot_containers)
+    log_resource_list("Images", awbot_images)
+    log_resource_list("Volumes", awbot_volumes)
+    log_resource_list("Networks", awbot_networks)
 
-    if not any([tux_containers, tux_images, tux_volumes, tux_networks]):
-        logger.success("No tux-related Docker resources found to clean up")
+    if not any([awbot_containers, awbot_images, awbot_volumes, awbot_networks]):
+        logger.success("No awbot-related Docker resources found to clean up")
         return 0
 
     if dry_run:
         logger.info("DRY RUN: No resources were actually removed")
         return 0
 
-    if not force and not click.confirm("Remove these tux-related Docker resources?"):
+    if not force and not click.confirm("Remove these awbot-related Docker resources?"):
         logger.info("Cleanup cancelled")
         return 0
 
-    logger.info("Cleaning up tux-related Docker resources...")
+    logger.info("Cleaning up awbot-related Docker resources...")
 
     # Remove resources in order
     def remove_resources(resource_type: str, resources: list[str]) -> None:
@@ -731,10 +731,10 @@ def cleanup(ctx: click.Context, volumes: bool, force: bool, dry_run: bool) -> in
             except Exception as e:
                 logger.warning(f"Failed to remove {resource_singular} {name}: {e}")
 
-    remove_resources("containers", tux_containers)
-    remove_resources("images", tux_images)
-    remove_resources("volumes", tux_volumes)
-    remove_resources("networks", tux_networks)
+    remove_resources("containers", awbot_containers)
+    remove_resources("images", awbot_images)
+    remove_resources("volumes", awbot_volumes)
+    remove_resources("networks", awbot_networks)
 
     # Clean dangling images and build cache
     logger.info("Cleaning dangling images and build cache...")
@@ -754,7 +754,7 @@ def cleanup(ctx: click.Context, volumes: bool, force: bool, dry_run: bool) -> in
     with contextlib.suppress(Exception):
         toolkit.safe_run(["docker", "builder", "prune", "-f"], capture_output=True)
 
-    logger.success("Tux Docker cleanup completed!")
+    logger.success("awbot Docker cleanup completed!")
     logger.info("")
     logger.info("📊 Final system state:")
     with contextlib.suppress(Exception):
@@ -791,7 +791,7 @@ def comprehensive(ctx: click.Context) -> int:  # noqa: PLR0915
 
     logger.info(f"Log directory: {comp_log_dir}")
     logger.info("")
-    logger.success("🛡️  SAFETY: This script only removes tux-related resources")
+    logger.success("🛡️  SAFETY: This script only removes awbot-related resources")
     logger.info("    System images, containers, and volumes are preserved")
     logger.info("")
 
@@ -826,7 +826,7 @@ def comprehensive(ctx: click.Context) -> int:  # noqa: PLR0915
     timer.start()
     try:
         toolkit.safe_run(
-            ["docker", "build", "--no-cache", "--target", "dev", "-t", "tux:fresh-dev", "."],
+            ["docker", "build", "--no-cache", "--target", "dev", "-t", "awbot:fresh-dev", "."],
             capture_output=True,
             timeout=300,
         )
@@ -843,7 +843,7 @@ def comprehensive(ctx: click.Context) -> int:  # noqa: PLR0915
     timer.start()
     try:
         toolkit.safe_run(
-            ["docker", "build", "--no-cache", "--target", "production", "-t", "tux:fresh-prod", "."],
+            ["docker", "build", "--no-cache", "--target", "production", "-t", "awbot:fresh-prod", "."],
             capture_output=True,
             timeout=300,
         )
@@ -861,7 +861,7 @@ def comprehensive(ctx: click.Context) -> int:  # noqa: PLR0915
 
     try:
         result = toolkit.safe_run(
-            ["docker", "run", "--rm", "--entrypoint=", "tux:fresh-prod", "whoami"],
+            ["docker", "run", "--rm", "--entrypoint=", "awbot:fresh-prod", "whoami"],
             capture_output=True,
             text=True,
             timeout=30,

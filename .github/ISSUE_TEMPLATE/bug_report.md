@@ -35,7 +35,7 @@ If applicable, add screenshots to help explain your problem.
 - OS: [e.g. Ubuntu 20.04]
 - Python version: [e.g. Python 3.12]
 - Discord.py version: [e.g. 2.0.0]
-- Tux version: [e.g. v1.0.0]
+- awbot version: [e.g. v1.0.0]
 
 ## Additional Context
 

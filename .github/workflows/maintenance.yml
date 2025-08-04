@@ -1,8 +1,8 @@
 # ==============================================================================
-# TUX DISCORD BOT - AUTOMATED MAINTENANCE & HOUSEKEEPING WORKFLOW
+# awbot DISCORD BOT - AUTOMATED MAINTENANCE & HOUSEKEEPING WORKFLOW
 # ==============================================================================
 #
-# This workflow handles automated maintenance tasks for the Tux Discord bot
+# This workflow handles automated maintenance tasks for the awbot Discord bot
 # project, ensuring repository health, code quality tracking, and resource
 # management. It provides intelligent automation for routine maintenance
 # tasks while offering manual controls for administrative operations.
@@ -57,7 +57,7 @@ on:
       keep_amount:
         description: Number of images to keep
         required: false
-        default: '10'
+        default: "10"
 
       # UNTAGGED IMAGE MANAGEMENT
       # Control over untagged image cleanup (typically development artifacts)
@@ -78,12 +78,12 @@ on:
   # SCHEDULED AUTOMATED MAINTENANCE
   # Monthly comprehensive maintenance spread to avoid resource conflicts
   schedule:
-    - cron: 0 3 1 * *  # Monthly cleanup on the 1st at 3 AM
+    - cron: 0 3 1 * * # Monthly cleanup on the 1st at 3 AM
 # CONCURRENCY MANAGEMENT
 # Prevents conflicting maintenance operations while allowing manual execution
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: false    # Maintenance operations should complete
+  cancel-in-progress: false # Maintenance operations should complete
 jobs:
   # ============================================================================
   # TODO TO ISSUES CONVERSION - Automated Task Tracking
@@ -98,11 +98,12 @@ jobs:
     runs-on: ubuntu-latest
     # EXECUTION CONDITIONS
     # Runs on code pushes or manual trigger with commit reference
-    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' &&
+    if:
+      github.event_name == 'push' || (github.event_name == 'workflow_dispatch' &&
       github.event.inputs.manual_commit_ref)
     permissions:
-      contents: read    # Required for repository access
-      issues: write    # Required for issue creation and management
+      contents: read # Required for repository access
+      issues: write # Required for issue creation and management
     steps:
       # REPOSITORY CHECKOUT
       # Full history required for accurate TODO comparison and tracking
@@ -116,14 +117,15 @@ jobs:
       - name: Convert TODOs to Issues
         uses: alstr/todo-to-issue-action@c45b007d85c8edf3365b139a9d4c65793e7c674f # v5.1.13
         with:
-          CLOSE_ISSUES: true              # Auto-close resolved TODOs
-          INSERT_ISSUE_URLS: true         # Link issues back to code
-          AUTO_ASSIGN: true              # Assign to commit authors
+          CLOSE_ISSUES: true # Auto-close resolved TODOs
+          INSERT_ISSUE_URLS: true # Link issues back to code
+          AUTO_ASSIGN: true # Assign to commit authors
           # CATEGORIZATION STRATEGY
           # Different keywords map to different issue types and labels
-          IDENTIFIERS: '[{"name": "TODO", "labels": ["enhancement"]}, {"name": "FIXME",
+          IDENTIFIERS:
+            '[{"name": "TODO", "labels": ["enhancement"]}, {"name": "FIXME",
             "labels": ["bug"]}]'
-          ESCAPE: true                   # Handle special characters safely
+          ESCAPE: true # Handle special characters safely
           # EXCLUSION PATTERNS
           # Skip maintenance-heavy directories and lock files
           IGNORE: .github/,node_modules/,dist/,build/,vendor/,poetry.lock
@@ -147,19 +149,20 @@ jobs:
     runs-on: ubuntu-latest
     # EXECUTION CONDITIONS
     # Runs on scheduled maintenance or manual trigger with image cleanup flag
-    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch'
+    if:
+      github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch'
       && github.event.inputs.cleanup_images == 'true')
     permissions:
-      packages: write    # Required for container registry management
-      contents: read    # Required for repository access
+      packages: write # Required for container registry management
+      contents: read # Required for repository access
     steps:
       # AUTOMATED IMAGE CLEANUP
       # Configurable cleanup with safety mechanisms and retention policies
       - name: Delete old container versions
         uses: actions/delete-package-versions@e5bc658cc4c965c472efe991f8beea3981499c55 # v5
         with:
-          package-name: tux                    # Target specific package
-          package-type: container             # Container images only
+          package-name: awbot # Target specific package
+          package-type: container # Container images only
           # CONFIGURABLE RETENTION POLICY
           # Default 10 images, override via manual trigger
           min-versions-to-keep: ${{ github.event.inputs.keep_amount || '10' }}
@@ -182,8 +185,8 @@ jobs:
     # Only runs on monthly scheduled maintenance for comprehensive analysis
     if: github.event_name == 'schedule'
     permissions:
-      contents: read    # Required for repository analysis
-      issues: write    # Required for future issue creation capabilities
+      contents: read # Required for repository analysis
+      issues: write # Required for future issue creation capabilities
     steps:
       # REPOSITORY CHECKOUT
       # Required for comprehensive file and dependency analysis
@@ -216,6 +219,7 @@ jobs:
           echo "Python files: $(find . -name "*.py" -not -path "./.git/*" | wc -l)"
           echo "Lines of Python code: $(find . -name "*.py" -not -path "./.git/*" -exec wc -l {} + 2>/dev/null | tail -1 || echo "0")"
           echo "Docker files: $(find . -name "Dockerfile*" -o -name "docker-compose*.yml" | wc -l)"
+
 # ==============================================================================
 # MAINTENANCE WORKFLOW BEST PRACTICES IMPLEMENTED
 # ==============================================================================

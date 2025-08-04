@@ -10,7 +10,7 @@ import pytest
 from _pytest.logging import LogCaptureFixture
 from _pytest.monkeypatch import MonkeyPatch
 
-from tux.utils.env import (
+from awbot.utils.env import (
     Config,
     ConfigurationError,
     Environment,
@@ -52,9 +52,9 @@ def cleanup_all_env_tokens() -> None:
 
 def set_all_env_tokens() -> None:
     os.environ |= {
-        "DEV_DATABASE_URL": "postgresql://localhost:5432/tux_dev",
+        "DEV_DATABASE_URL": "postgresql://localhost:5432/awbot_dev",
         "DEV_BOT_TOKEN": "dev_token_123",
-        "PROD_DATABASE_URL": "postgresql://prod-db:5432/tux_prod",
+        "PROD_DATABASE_URL": "postgresql://prod-db:5432/awbot_prod",
         "PROD_BOT_TOKEN": "prod_token_456",
     }
 
@@ -112,11 +112,11 @@ class TestProductionConfig:
         try:
             # Start in development
             configure_environment(dev_mode=True)
-            assert_env_tokens("postgresql://localhost:5432/tux_dev", "dev_token_123")
+            assert_env_tokens("postgresql://localhost:5432/awbot_dev", "dev_token_123")
 
             # Switch to production (like in deployment)
             configure_environment(dev_mode=False)
-            assert_env_tokens("postgresql://prod-db:5432/tux_prod", "prod_token_456")
+            assert_env_tokens("postgresql://prod-db:5432/awbot_prod", "prod_token_456")
         finally:
             # Cleanup
             cleanup_all_env_tokens()
@@ -151,7 +151,7 @@ class TestContainerConfig:
         env_content = textwrap.dedent("""\
             # Production Environment Configuration
             # Database Configuration
-            PROD_DATABASE_URL=postgresql://postgres:password@db:5432/tux
+            PROD_DATABASE_URL=postgresql://postgres:password@db:5432/awbot
             # Bot Configuration
             PROD_BOT_TOKEN=MTAxNjY5...actual_long_token_here
             # Application Configuration
@@ -167,7 +167,7 @@ class TestContainerConfig:
             tmp_path = Path(tmp.name)
         try:
             config = Config(dotenv_path=tmp_path, load_env=True)
-            assert config.get("PROD_DATABASE_URL") == "postgresql://postgres:password@db:5432/tux"
+            assert config.get("PROD_DATABASE_URL") == "postgresql://postgres:password@db:5432/awbot"
             assert config.get("LOG_LEVEL") == "INFO"
             assert config.get("SENTRY_DSN") == "https://123@sentry.io/456"
         finally:
@@ -177,9 +177,9 @@ class TestContainerConfig:
     def test_config_drift_detection(self):
         """Test detecting configuration drift between environments."""
         # This is critical in enterprise - ensuring config consistency
-        dev_config = {"DEV_DATABASE_URL": "postgresql://localhost:5432/tux_dev", "DEV_BOT_TOKEN": "dev_token"}
+        dev_config = {"DEV_DATABASE_URL": "postgresql://localhost:5432/awbot_dev", "DEV_BOT_TOKEN": "dev_token"}
 
-        prod_config = {"PROD_DATABASE_URL": "postgresql://prod:5432/tux_prod", "PROD_BOT_TOKEN": "prod_token"}
+        prod_config = {"PROD_DATABASE_URL": "postgresql://prod:5432/awbot_prod", "PROD_BOT_TOKEN": "prod_token"}
 
         with patch.dict(os.environ, dev_config | prod_config):
             config = Config(load_env=False)
@@ -201,7 +201,7 @@ class TestSecurityConfig:
     def test_database_connection_security(self):
         """Test database connection security requirements."""
         # Test that production database URLs require SSL
-        insecure_db_url = "postgresql://user:pass@db:5432/tux?sslmode=disable"
+        insecure_db_url = "postgresql://user:pass@db:5432/awbot?sslmode=disable"
 
         os.environ["PROD_DATABASE_URL"] = insecure_db_url
 
@@ -263,7 +263,7 @@ class TestMonitoringAndObservabilityScenarios:
     def test_configuration_health_check(self):
         """Test health check endpoint includes configuration status."""
         # Enterprise apps expose configuration health via health checks
-        os.environ |= {"PROD_DATABASE_URL": "postgresql://prod:5432/tux", "PROD_BOT_TOKEN": "valid_token"}
+        os.environ |= {"PROD_DATABASE_URL": "postgresql://prod:5432/awbot", "PROD_BOT_TOKEN": "valid_token"}
 
         try:
             configure_environment(dev_mode=False)
@@ -307,7 +307,7 @@ def test_database_url_format_validation(monkeypatch: MonkeyPatch):
 @pytest.mark.integration
 @pytest.mark.xfail(reason="SSL validation for production DB not yet implemented")
 def test_production_db_ssl_enforcement(monkeypatch: MonkeyPatch):
-    monkeypatch.setenv("PROD_DATABASE_URL", "postgresql://user:pass@db:5432/tux?sslmode=disable")
+    monkeypatch.setenv("PROD_DATABASE_URL", "postgresql://user:pass@db:5432/awbot?sslmode=disable")
     config = Config(load_env=False)
     db_url = config.get_database_url(Environment.PRODUCTION)
     assert "sslmode=disable" in db_url

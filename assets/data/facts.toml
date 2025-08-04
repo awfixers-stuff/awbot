@@ -40,12 +40,12 @@ name = "Useless"
 fact_api_url = "https://uselessfacts.jsph.pl/api/v2/facts/random?language=en"
 fact_api_field = "text"
 
-[facts.tux]
+[facts.awbot]
 name = "{bot_name}"
 facts = [
   "As of 2025, {bot_name} has over 20 thousand lines of code.",
   "The first stable release of {bot_name} was over 1 year after its creation.",
-  "{bot_name} is fully open source and available on GitHub (https://github.com/allthingslinux/tux). Unless you forked it and made it private, in which case, please make it public (GPLv3).",
+  "{bot_name} is fully open source and available on GitHub (https://github.com/allthingslinux/awbot). Unless you forked it and made it private, in which case, please make it public (GPLv3).",
 ]
 
 [facts.taco_bell]

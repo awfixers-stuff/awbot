@@ -132,7 +132,7 @@ cython_debug/
 
 # Logs
 logs/
-tux/logs/
+awbot/logs/
 
 # IDEs
 # PyCharm
@@ -167,9 +167,9 @@ docs/site/
 site/
 
 # extensions
-tux/extensions/*
-!tux/extensions/README.md
-!tux/extensions/__init__.py
+awbot/extensions/*
+!awbot/extensions/README.md
+!awbot/extensions/__init__.py
 
 # misc
 slim.report.json
