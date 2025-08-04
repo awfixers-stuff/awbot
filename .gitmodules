@@ -1,0 +1,9 @@
+[submodule "deps/discord.py"]
+	path = deps/discord.py
+	url = git@github.com:awfixers-stuff/discord.py
+[submodule "deps/makes"]
+	path = deps/makes
+	url = git@github.com:awfixers-stuff/makes
+[submodule "deps/axyl-flake"]
+	path = deps/axyl-flake
+	url = git@github.com:awfixers-stuff/axyl-flake
