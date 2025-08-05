@@ -358,7 +358,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@f095bcc56b7c2baf48f3ac70d6d6782f4f553222
-      - uses: cachix/install-nix-action@v15
+      - uses: cachix/install-nix-action@5f45af07a1f451c75a4ce84e1514200195a1f279 # v15
       - name: /tests/makeSearchPaths
         run: nix-env -if . && m . /tests/makeSearchPaths
         env:
@@ -378,7 +378,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@f095bcc56b7c2baf48f3ac70d6d6782f4f553222
-      - uses: cachix/install-nix-action@v15
+      - uses: cachix/install-nix-action@5f45af07a1f451c75a4ce84e1514200195a1f279 # v15
       - name: /tests/makeTemplate
         run: nix-env -if . && m . /tests/makeTemplate
         env:
@@ -398,7 +398,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@f095bcc56b7c2baf48f3ac70d6d6782f4f553222
-      - uses: cachix/install-nix-action@v15
+      - uses: cachix/install-nix-action@5f45af07a1f451c75a4ce84e1514200195a1f279 # v15
       - name: /tests/makeScript
         run: nix-env -if . && m . /tests/makeScript
         env:
