@@ -1,0 +1,3 @@
+[submodule "discord.py"]
+	path = discord.py
+	url = git@github.com:awfixers-stuff/discord.py
