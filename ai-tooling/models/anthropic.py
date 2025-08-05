@@ -1,4 +1,3 @@
-awbot/ai-tooling/models/anthropic.py#L1-23
 import requests
 
 class Model:
