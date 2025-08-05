@@ -47,14 +47,18 @@ log_info "Engines directory: $ENGINES_DIR"
 # Create engines directory
 mkdir -p "$ENGINES_DIR"
 
-# Multiple commit hashes to try (from different Prisma versions)
-COMMIT_HASHES=(
-    "393aa359c9ad4a4bb28630fb5613f9c281cde053"
-    "5a9203d0590c951969b85658dd707a50e63ad7b9"
-    "bf0e5e8a04cada8225617067eaa5d6ad23f62d98"
-    "4bc8b29b2c0de98bdcb68f4d1a31de3b5a3e9e7a"
-    "89662a2b6c1b5b3e4b4b9c5e8d6a8b4a5c3e2e1a"
-)
+# Dynamically detect Prisma CLI version (fallback to known commit if not found)
+PRISMA_VERSION=""
+if command -v poetry >/dev/null 2>&1 && poetry run prisma --version 2>/dev/null | grep -q 'Prisma CLI'; then
+    PRISMA_VERSION="$(poetry run prisma --version | grep 'Prisma CLI' | awk '{print $3}')"
+fi
+if [ -z "$PRISMA_VERSION" ]; then
+    # fallback to latest known commit hash
+    PRISMA_VERSION="393aa359c9ad4a4bb28630fb5613f9c281cde053"
+    log_warning "Could not detect Prisma CLI version, using fallback commit hash: $PRISMA_VERSION"
+else
+    log_info "Detected Prisma CLI version: $PRISMA_VERSION"
+fi
 
 # Engine binaries to download
 engines=("query-engine" "schema-engine" "prisma-fmt")
@@ -66,62 +70,85 @@ log_info "Trying multiple commit hashes and platforms for maximum compatibility"
 
 for engine in "${engines[@]}"; do
     engine_path="$ENGINES_DIR/$engine"
-    
+
     if [[ -f "$engine_path" && -x "$engine_path" ]]; then
         log_success "$engine already exists and is executable, skipping"
         continue
     fi
-    
+
     log_info "Downloading $engine..."
     downloaded=false
-    
-    for commit in "${COMMIT_HASHES[@]}"; do
-        if [[ "$downloaded" = true ]]; then
-            break
+
+    # Try detected Prisma version first, then fallback to known commit hash if needed
+    for platform in "${platforms[@]}"; do
+        url="https://binaries.prisma.sh/all_commits/$PRISMA_VERSION/$platform/$engine"
+        log_info "  Trying $url"
+        if curl -fsSL --connect-timeout 10 --max-time 30 "$url" -o "$engine_path.tmp" 2>/dev/null; then
+            if [[ -s "$engine_path.tmp" ]]; then
+                if command -v file >/dev/null 2>&1; then
+                    if file "$engine_path.tmp" | grep -q "executable\|ELF"; then
+                        mv "$engine_path.tmp" "$engine_path"
+                        chmod +x "$engine_path"
+                        log_success "  $engine downloaded successfully ($platform, $PRISMA_VERSION)"
+                        downloaded=true
+                        break
+                    else
+                        log_warning "  Downloaded file doesn't appear to be a valid binary"
+                        rm -f "$engine_path.tmp"
+                    fi
+                else
+                    mv "$engine_path.tmp" "$engine_path"
+                    chmod +x "$engine_path"
+                    log_success "  $engine downloaded successfully ($platform, $PRISMA_VERSION)"
+                    downloaded=true
+                    break
+                fi
+            else
+                log_warning "  Downloaded file is empty"
+                rm -f "$engine_path.tmp"
+            fi
+        else
+            log_warning "  Failed to download from $url"
         fi
-        
-        log_info "  Trying commit $commit..."
-        
+    done
+
+    # Fallback to latest known commit hash if not already tried
+    if [[ "$downloaded" = false && "$PRISMA_VERSION" != "393aa359c9ad4a4bb28630fb5613f9c281cde053" ]]; then
         for platform in "${platforms[@]}"; do
-            url="https://binaries.prisma.sh/all_commits/$commit/$platform/$engine"
-            log_info "    Trying $platform..."
-            
+            url="https://binaries.prisma.sh/all_commits/393aa359c9ad4a4bb28630fb5613f9c281cde053/$platform/$engine"
+            log_info "  Fallback: Trying $url"
             if curl -fsSL --connect-timeout 10 --max-time 30 "$url" -o "$engine_path.tmp" 2>/dev/null; then
-                # Verify the downloaded file is not empty
                 if [[ -s "$engine_path.tmp" ]]; then
-                    # Try to verify it's a valid binary (if file command is available)
                     if command -v file >/dev/null 2>&1; then
                         if file "$engine_path.tmp" | grep -q "executable\|ELF"; then
                             mv "$engine_path.tmp" "$engine_path"
                             chmod +x "$engine_path"
-                            log_success "    $engine downloaded successfully ($platform, $commit)"
+                            log_success "  $engine downloaded successfully (fallback: $platform)"
                             downloaded=true
                             break
                         else
-                            log_warning "    Downloaded file doesn't appear to be a valid binary"
+                            log_warning "  Downloaded file doesn't appear to be a valid binary"
                             rm -f "$engine_path.tmp"
                         fi
                     else
-                        # If file command not available, just check size and assume it's valid
                         mv "$engine_path.tmp" "$engine_path"
                         chmod +x "$engine_path"
-                        log_success "    $engine downloaded successfully ($platform, $commit)"
+                        log_success "  $engine downloaded successfully (fallback: $platform)"
                         downloaded=true
                         break
                     fi
                 else
-                    log_warning "    Downloaded file is empty"
+                    log_warning "  Downloaded file is empty"
                     rm -f "$engine_path.tmp"
                 fi
             else
-                log_warning "    Failed to download from $platform"
+                log_warning "  Failed to download from $url"
             fi
         done
-    done
-    
+    fi
+
     if [[ "$downloaded" = false ]]; then
         log_warning "Could not download $engine from any source"
-        # Create a placeholder script that explains the issue
         cat > "$engine_path" << 'EOF'
 #!/bin/bash
 echo "Prisma engine not available - manual download required" >&2

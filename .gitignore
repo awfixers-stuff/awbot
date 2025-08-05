@@ -177,3 +177,9 @@ prisma_binaries/
 .archive/
 
 reports/
+
+node_modules/
+
+*lock
+pnpm-lock.yaml
+package-lock.json

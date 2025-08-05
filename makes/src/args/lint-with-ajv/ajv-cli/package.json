@@ -1,7 +1,7 @@
 {
   "name": "lint-with-ajv",
   "dependencies": {
-    "ajv-cli": "*"
+    "ajv-cli": "^5.0.0"
   },
   "overrides": {
     "fast-json-patch": "3.1.1"
