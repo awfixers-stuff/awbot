@@ -23,7 +23,6 @@ class Fact(commands.Cog):
         self.fact.usage = generate_usage(self.fact)
 
     def _load_facts(self) -> None:
-        """Load facts from the facts.toml file."""
         facts_path = workspace_root / "assets" / "data" / "facts.toml"
         try:
             data = tomllib.loads(facts_path.read_text(encoding="utf-8"))
@@ -38,7 +37,6 @@ class Fact(commands.Cog):
 
     async def _fetch_fact(self, fact_type: str) -> tuple[str, str] | None:
         ft = fact_type.lower()
-        # Determine category key
         if ft == "random":
             key = random.choice(list(self.facts_data)) if self.facts_data else None
         elif ft in self.facts_data:
@@ -53,7 +51,6 @@ class Fact(commands.Cog):
             return None
         cfg = self.facts_data[key]
         disp = await handle_substitution(self.bot, cfg.get("name", key.title()))
-        # Fetch via API if configured
         if cfg.get("fact_api_url") and cfg.get("fact_api_field"):
             try:
                 async with httpx.AsyncClient(timeout=10.0) as client:
@@ -74,7 +71,7 @@ class Fact(commands.Cog):
         current: str,
     ) -> list[app_commands.Choice[str]]:
         choices = [app_commands.Choice(name="Random", value="random")] + [
-            app_commands.Choice(name=(await handle_substitution(self.bot, data.get("name", key.title()))), value=key)
+            app_commands.Choice(name=(await handle_substitution(self.bot, data.get("name", key.title())), value=key)
             for key, data in self.facts_data.items()
         ]
         if current:
@@ -85,7 +82,6 @@ class Fact(commands.Cog):
     @app_commands.describe(fact_type="Select the category of fact to retrieve")
     @app_commands.autocomplete(fact_type=fact_type_autocomplete)
     async def fact(self, ctx: commands.Context[awbot], fact_type: str = "random") -> None:
-        """Get a fun fact by category or random."""
         res = await self._fetch_fact(fact_type)
         if res:
             fact, category = res

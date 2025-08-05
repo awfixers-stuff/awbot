@@ -3,7 +3,7 @@ generator client {
   recursive_type_depth = "-1"
   interface            = "asyncio"
   binaryTargets = ["native"]
-  features = ["prismaSchemaFolder"]
+  previewFeatures = ["prismaSchemaFolder"]
 }
 
 datasource db {

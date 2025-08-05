@@ -166,6 +166,10 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # OPTIMIZATION: This pattern maximizes cache hits during development
 COPY pyproject.toml poetry.lock ./
 
+# Copy discord.py local dependency before installing dependencies
+# This is required because pyproject.toml references it as a local path dependency
+COPY discord.py/ ./discord.py/
+
 # Install Python dependencies using Poetry
 # PERFORMANCE: Cache mount speeds up subsequent builds
 # SECURITY: --only main excludes development dependencies from production

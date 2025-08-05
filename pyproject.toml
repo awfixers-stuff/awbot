@@ -4,7 +4,7 @@ description = "awbot is an all in one bot for the All Things Linux discord serve
 authors = [{ name = "All Things Linux", email = "awbot@allthingslinux.org" }]
 requires-python = ">=3.13.2,<3.14"
 readme = "README.md"
-urls = { repository = "https://github.com/allthingslinux/awbot" }
+urls = { repository = "https://github.com/awfixers-stuff/awbot" }
 version = "0.0.0"
 
 [project.scripts]

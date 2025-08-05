@@ -38,15 +38,10 @@ pip-log.txt
 pip-delete-this-directory.txt
 
 # Unit test / coverage reports
-htmlcov/
 .tox/
 .nox/
-.coverage
-.coverage.*
-.coverage-*
 .cache
 nosetests.xml
-coverage.xml
 *.cover
 *.py,cover
 .hypothesis/
@@ -140,6 +135,7 @@ awbot/logs/
 
 # Prisma
 .binaries/
+.prisma-engines/
 prisma/database.db
 
 # Environments

@@ -1,0 +1,98 @@
+# cloudconfigs/k8s/deployments/backend-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: discordlinked-app
+  labels:
+    app: discordlinked
+    tier: backend
+spec:
+  replicas: 2 # Adjust as needed for scaling
+  selector:
+    matchLabels:
+      app: discordlinked
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: discordlinked
+        tier: backend
+    spec:
+      containers:
+      - name: app
+        image: your-docker-registry/discordlinked-app:latest # Replace with your backend image
+        ports:
+        - containerPort: 3000
+        envFrom:
+        - configMapRef:
+            name: discordlinked-config # Load non-sensitive configs
+        env:
+        - name: DISCORD_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: discord-secrets # Name of the K8s Secret created by 1Password Operator
+              key: DISCORD_TOKEN # Key within that Secret
+        - name: DISCORD_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: discord-secrets
+              key: DISCORD_CLIENT_ID
+        - name: DISCORD_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: discord-secrets
+              key: DISCORD_CLIENT_SECRET
+        - name: DISCORD_REDIRECT_URI
+          valueFrom:
+            secretKeyRef:
+              name: discord-secrets
+              key: DISCORD_REDIRECT_URI
+        - name: BOT_ADMIN_ROLE_ID
+          valueFrom:
+            secretKeyRef:
+              name: discord-secrets
+              key: BOT_ADMIN_ROLE_ID
+        - name: BOT_READONLY_ADMIN_ROLE_ID
+          valueFrom:
+            secretKeyRef:
+              name: discord-secrets
+              key: BOT_READONLY_ADMIN_ROLE_ID
+        - name: SESSION_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: discord-secrets # Assuming you put SESSION_SECRET in discord-secrets item
+              key: SESSION_SECRET
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: database-secrets # Name of the K8s Secret created by 1Password Operator
+              key: DATABASE_URL # Key within that Secret
+        - name: STRIPE_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: stripe-secrets
+              key: STRIPE_SECRET_KEY
+        - name: STRIPE_WEBHOOK_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: stripe-secrets
+              key: STRIPE_WEBHOOK_SECRET
+        - name: ENCRYPTION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: encryption-key-secret
+              key: ENCRYPTION_KEY
+        - name: SENTRY_DSN
+          valueFrom:
+            secretKeyRef:
+              name: sentry-secrets # Assuming a separate 1Password item for Sentry DSN
+              key: SENTRY_DSN
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+      imagePullSecrets:
+      - name: regcred # If using a private Docker registry

@@ -20,22 +20,16 @@ inputs:
 runs:
   using: composite
   steps:
-    # POETRY INSTALLATION
-    # Uses pipx for isolated Poetry installation without conflicts
     - name: Install Poetry
       shell: bash
       run: pipx install poetry
 
-    # PYTHON ENVIRONMENT SETUP
-    # Configures Python with integrated Poetry cache support
     - name: Set up Python
       uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
       with:
         python-version: ${{ inputs.python-version }}
         cache: poetry
 
-    # ADVANCED DEPENDENCY CACHING
-    # Multi-level caching strategy for maximum cache hit rate
     - name: Cache Poetry dependencies
       uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
       with:
@@ -47,8 +41,6 @@ runs:
         restore-keys: |
           poetry-${{ inputs.cache-suffix }}-${{ runner.os }}-
 
-    # DEPENDENCY INSTALLATION
-    # Installs specified Poetry groups with CI-optimized settings
     - name: Install dependencies
       shell: bash
       run: |
@@ -58,8 +50,6 @@ runs:
           poetry install --with=${{ inputs.install-groups }} --no-interaction --no-ansi
         fi
 
-    # CONDITIONAL PRISMA CLIENT GENERATION
-    # Generates Prisma database client when needed for database operations
     - name: Generate Prisma client
       if: ${{ inputs.generate-prisma == 'true' }}
       shell: bash

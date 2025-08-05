@@ -429,7 +429,7 @@ poetry run awbot test benchmark
 ## 📚 Additional Resources
 
 - **Pytest Documentation**: [docs.pytest.org](https://docs.pytest.org/)
-- **Discord.py Testing**: [discordpy.readthedocs.io](https://discordpy.readthedocs.io/)
+- **Discord.py Testing**: [https://dpy.awfixerbots.xyz](https://dpy.awfixerbots.xyz/)
 - **CodeCov Documentation**: [docs.codecov.com](https://docs.codecov.com/)
 - **Project CodeCov Dashboard**: [codecov.io/gh/allthingslinux/awbot](https://codecov.io/gh/allthingslinux/awbot)
 

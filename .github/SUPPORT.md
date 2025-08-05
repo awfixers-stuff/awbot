@@ -34,7 +34,7 @@ You can find the development guide in the `docs` directory at [docs/development.
 
 If you encounter any bugs or have feature requests, please follow these steps:
 
-1. **Search Existing Issues**: Before creating a new issue, please search the existing [issues](https://github.com/allthingslinux/awbot/issues) to check if your concern has already been addressed.
+1. **Search Existing Issues**: Before creating a new issue, please search the existing [issues](https://github.com/awfixers-stuff/awbot/issues) to check if your concern has already been addressed.
 
 2. **Create a New Issue**: If you can't find a relevant issue, you can create a new one. Ensure you provide detailed info, including steps to reproduce the issue, expected behavior & any relevant logs or screenshots.
 
@@ -46,8 +46,8 @@ We appreciate and welcome contributions to awbot! If you're interested in contri
 
 For additional help or questions that you can't find answers to, feel free to reach out to us through:
 
-- **Discord Support Server**: [atl.dev](https://discord.gg/gpmSjcjQxg)
-- **GitHub Issues**: [awbot Issues](https://github.com/allthingslinux/awbot/issues)
+- **Discord Support Server**: [AJ's Basement](https://inv.wtf/deadinside)
+- **GitHub Issues**: [awbot Issues](https://github.com/awfixers-stuff/awbot/issues)
 
 We aim to respond to all queries as quickly as possible.
 

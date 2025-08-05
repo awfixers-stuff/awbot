@@ -726,7 +726,7 @@ class awbotHelp(commands.HelpCommand):
         )
         embed.add_field(
             name="Support Server",
-            value="-# [Need support? Join Server](https://discord.gg/gpmSjcjQxg)",
+            value="-# [Need support? Join Server](https://inv.wtf/deadinside)",
             inline=True,
         )
         embed.add_field(

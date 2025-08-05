@@ -16,12 +16,9 @@ inputs:
 runs:
   using: composite
   steps:
-    # TEST ENVIRONMENT CONFIGURATION
-    # Creates isolated test environment with safe defaults
     - name: Create test environment file
       shell: bash
       run: |-
-        # Create .env file for CI/testing with required values
         cat > .env << EOF
         DEV_DATABASE_URL=${{ inputs.database-url }}
         PROD_DATABASE_URL=${{ inputs.database-url }}
@@ -29,7 +26,6 @@ runs:
         PROD_BOT_TOKEN=${{ inputs.bot-token }}
         EOF
 
-        # Add any additional environment variables if provided
         if [ -n "${{ inputs.additional-vars }}" ]; then
           echo "${{ inputs.additional-vars }}" >> .env
         fi

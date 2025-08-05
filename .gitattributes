@@ -157,8 +157,7 @@ __pycache__/ export-ignore
 *.pyc export-ignore
 .pytest_cache/ export-ignore
 .mypy_cache/ export-ignore
-.coverage export-ignore
-htmlcov/ export-ignore
+
 .env* export-ignore
 logs/ export-ignore
 

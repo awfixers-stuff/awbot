@@ -30,7 +30,6 @@ jobs:
       - name: Prepare version info
         id: version
         run: |
-          # For PR validation, use PR number and short SHA for version
           VERSION="pr-${{ github.event.number }}-$(echo "${{ github.sha }}" | cut -c1-7)"
           {
             echo "version=$VERSION"
@@ -87,8 +86,6 @@ jobs:
       - name: Prepare version info
         id: version
         run: |
-          # Try to get version from git tags, fallback to SHA (consistent with Dockerfile)
-          # Execute git commands only once and store results to avoid transient failures
           if EXACT_TAG=$(git describe --tags --exact-match 2>/dev/null); then
             VERSION=${EXACT_TAG#v}
           elif TAG_DESC=$(git describe --tags --always 2>/dev/null); then
@@ -125,9 +122,9 @@ jobs:
           flavor: |
             latest=${{ github.ref == 'refs/heads/main' }}
           tags: |
-            type=ref,event=branch    # Branch-based tags for development
-            type=ref,event=tag       # Version tags for releases
-            type=sha                 # SHA-based tags for traceability
+            type=ref,event=branch
+            type=ref,event=tag
+            type=sha
           labels: |
             org.opencontainers.image.title="awbot"
             org.opencontainers.image.description="awbot - The all in one discord bot for the All Things Linux Community"
@@ -221,5 +218,3 @@ jobs:
         continue-on-error: true
         run: |
           echo "Cleaning up any remaining buildcache images..."
-          # This will help clean up existing buildcache images
-          # After our fix, no new buildcache images should be created
