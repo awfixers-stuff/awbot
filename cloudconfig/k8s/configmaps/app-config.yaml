@@ -1,0 +1,14 @@
+# cloudconfigs/k8s/configmaps/app-config.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: discordlinked-config
+  labels:
+    app: discordlinked
+data:
+  FRONTEND_URL: "https://your.frontend.domain" # Replace with your actual frontend domain
+  SENTRY_ENABLED: "true" # Or "false"
+  SENTRY_ENVIRONMENT: "production"
+  SENTRY_RELEASE: "discordlinked@1.0.0"
+  PG_SESSION_TABLE_NAME: "session"
+  # Add any other non-sensitive environment variables here
