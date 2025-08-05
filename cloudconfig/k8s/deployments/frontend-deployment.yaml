@@ -1,0 +1,39 @@
+# cloudconfigs/k8s/deployments/frontend-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: discordlinked-frontend
+  labels:
+    app: discordlinked
+    tier: frontend
+spec:
+  replicas: 2 # Adjust as needed for scaling
+  selector:
+    matchLabels:
+      app: discordlinked
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        app: discordlinked
+        tier: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: your-docker-registry/discordlinked-frontend:latest # Replace with your frontend image
+        ports:
+        - containerPort: 5173 # Vite's default port
+        envFrom:
+        - configMapRef:
+            name: discordlinked-config # Load non-sensitive configs
+        # Frontend typically doesn't need direct access to sensitive backend secrets
+        # It communicates with the backend API
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+      imagePullSecrets:
+      - name: regcred # If using a private Docker registry
