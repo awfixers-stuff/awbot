@@ -1,8 +1,3 @@
-"""Test command group for awbot CLI.
-
-This module provides all testing-related commands for the awbot project.
-"""
-
 from pathlib import Path
 
 import click
@@ -10,40 +5,29 @@ from loguru import logger
 
 from awbot.cli.core import command_registration_decorator, create_group, run_command
 
-# Create the test command group
 test_group = create_group(
     "test",
     "Test commands for running various types of tests and generating reports.",
 )
 
-
 @command_registration_decorator(test_group, name="run")
 def test() -> int:
-    """Run tests with coverage and enhanced output."""
     return run_command(["pytest", "--cov=awbot", "--cov-report=term-missing", "--randomly-seed=last"])
-
 
 @command_registration_decorator(test_group, name="quick")
 def test_quick() -> int:
-    """Run tests without coverage (faster with enhanced output)."""
     return run_command(["pytest", "--no-cov", "--randomly-seed=last"])
-
 
 @command_registration_decorator(test_group, name="plain")
 def test_plain() -> int:
-    """Run tests with plain output (no pytest-sugar)."""
     return run_command(["pytest", "-p", "no:sugar", "--cov=awbot", "--cov-report=term-missing", "--randomly-seed=last"])
-
 
 @command_registration_decorator(test_group, name="parallel")
 def test_parallel() -> int:
-    """Run tests in parallel using multiple workers."""
     return run_command(["pytest", "--cov=awbot", "--cov-report=term-missing", "-n", "auto", "--randomly-seed=last"])
-
 
 @command_registration_decorator(test_group, name="html")
 def test_html() -> int:
-    """Run tests and generate HTML report."""
     return run_command(
         [
             "pytest",
@@ -55,12 +39,9 @@ def test_html() -> int:
         ],
     )
 
-
 @command_registration_decorator(test_group, name="benchmark")
 def test_benchmark() -> int:
-    """Run benchmark tests to measure performance."""
     return run_command(["pytest", "--benchmark-only", "--benchmark-sort=mean"])
-
 
 @command_registration_decorator(test_group, name="coverage")
 @click.option(
@@ -115,33 +96,21 @@ def coverage(
     plain: bool,
     xml_file: str | None,
 ) -> int:
-    """Generate comprehensive coverage reports with various output formats."""
-    # Clean coverage files if requested
     if clean:
         _clean_coverage_files()
-
-    # Build and run command
     cmd = _build_coverage_command(specific, quick, report_format, fail_under, plain, xml_file)
     result = run_command(cmd)
-
-    # Open HTML report if requested and generated
     if result == 0 and open_browser and report_format == "html":
         _open_html_report()
-
     return result
-
 
 @command_registration_decorator(test_group, name="coverage-clean")
 def coverage_clean() -> int:
-    """Clean coverage files and data."""
     return _clean_coverage_files()
-
 
 @command_registration_decorator(test_group, name="coverage-open")
 def coverage_open() -> int:
-    """Open HTML coverage report in browser."""
     return _open_html_report()
-
 
 def _build_coverage_command(
     specific: str | None,
@@ -151,44 +120,28 @@ def _build_coverage_command(
     plain: bool = False,
     xml_file: str | None = None,
 ) -> list[str]:
-    """Build the pytest coverage command with options."""
     cmd = ["pytest"]
-
-    # Disable pytest-sugar if plain mode requested
     if plain:
         logger.info("Using plain output (pytest-sugar disabled)...")
         cmd.extend(["-p", "no:sugar"])
-
-    # Set coverage path (specific or default)
     if specific:
         logger.info(f"Running coverage for specific path: {specific}")
         cmd.append(f"--cov={specific}")
     else:
         cmd.append("--cov=awbot")
-
-    # Handle quick mode (no reports)
     if quick:
         logger.info("Quick coverage check (no reports)...")
         cmd.append("--cov-report=")
-        cmd.extend(["--randomly-seed=last"])  # Add randomization even for quick tests
+        cmd.extend(["--randomly-seed=last"])
         return cmd
-
-    # Add report format
     _add_report_format(cmd, report_format, xml_file)
-
-    # Add fail-under if specified
     if fail_under is not None:
         logger.info(f"Running with {fail_under}% coverage threshold...")
         cmd.extend(["--cov-fail-under", str(fail_under)])
-
-    # Add randomization for reproducible test ordering
     cmd.extend(["--randomly-seed=last"])
-
     return cmd
 
-
 def _add_report_format(cmd: list[str], report_format: str, xml_file: str | None = None) -> None:
-    """Add the appropriate coverage report format to the command."""
     if report_format == "html":
         cmd.append("--cov-report=html")
         logger.info("Generating HTML coverage report...")
@@ -205,11 +158,8 @@ def _add_report_format(cmd: list[str], report_format: str, xml_file: str | None 
             cmd.append("--cov-report=xml")
             logger.info("Generating XML coverage report...")
 
-
 def _clean_coverage_files() -> int:
-    """Clean coverage files and directories."""
-    import shutil  # noqa: PLC0415
-
+    import shutil
     coverage_files = [
         ".coverage",
         ".coverage.*",
@@ -217,11 +167,9 @@ def _clean_coverage_files() -> int:
         "coverage.xml",
         "coverage.json",
     ]
-
     logger.info("🧹 Cleaning coverage files...")
     for pattern in coverage_files:
         if "*" in pattern:
-            # Handle glob patterns
             for file_path in Path().glob(pattern):
                 Path(file_path).unlink(missing_ok=True)
                 logger.debug(f"Removed: {file_path}")
@@ -233,21 +181,15 @@ def _clean_coverage_files() -> int:
             elif path.is_dir():
                 shutil.rmtree(path, ignore_errors=True)
                 logger.debug(f"Removed directory: {path}")
-
     logger.info("Coverage cleanup completed")
     return 0
 
-
 def _open_html_report() -> int:
-    """Open HTML coverage report in the default browser."""
-    import webbrowser  # noqa: PLC0415
-
+    import webbrowser
     html_report_path = Path("htmlcov/index.html")
-
     if not html_report_path.exists():
         logger.error("HTML coverage report not found. Run coverage with --format=html first.")
         return 1
-
     try:
         webbrowser.open(f"file://{html_report_path.resolve()}")
         logger.info("Opening HTML coverage report in browser...")

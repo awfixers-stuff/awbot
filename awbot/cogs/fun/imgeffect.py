@@ -54,8 +54,8 @@ class ImgEffect(commands.Cog):
         r = ImageEnhance.Contrast(r).enhance(2.0)
         r = ImageEnhance.Brightness(r).enhance(1.5)
 
-        black_color = f"#{254:02x}{0:02x}{2:02x}"  # (254, 0, 2) as hex
-        white_color = f"#{255:02x}{255:02x}{15:02x}"  # (255, 255, 15) as hex
+        black_color = f"#{254:02x}{0:02x}{2:02x}"
+        white_color = f"#{255:02x}{255:02x}{15:02x}"
 
         r = ImageOps.colorize(r, black_color, white_color)
         pil_image = Image.blend(pil_image, r, 0.75)

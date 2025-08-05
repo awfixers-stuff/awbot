@@ -27,15 +27,6 @@ class Git(commands.Cog):
     @commands.guild_only()
     @checks.has_pl(8)
     async def git(self, ctx: commands.Context[awbot]) -> None:
-        """
-        Github related commands.
-
-        Parameters
-        ----------
-        ctx : commands.Context[awbot]
-            The context object for the command.
-        """
-
         if ctx.invoked_subcommand is None:
             await ctx.send_help("git")
 
@@ -46,15 +37,6 @@ class Git(commands.Cog):
     @commands.guild_only()
     @checks.has_pl(8)
     async def get_repo(self, ctx: commands.Context[awbot]) -> None:
-        """
-        Get repository information.
-
-        Parameters
-        ----------
-        ctx : commands.Context[awbot]
-            The context object for the command.
-        """
-
         try:
             repo = await self.github.get_repo()
 
@@ -86,19 +68,6 @@ class Git(commands.Cog):
     @commands.guild_only()
     @checks.has_pl(8)
     async def create_issue(self, ctx: commands.Context[awbot], title: str, body: str) -> None:
-        """
-        Create an issue.
-
-        Parameters
-        ----------
-        ctx : commands.Context[awbot]
-            The context object for the command.
-        title : str
-            The title of the issue.
-        body : str
-            The body of the issue.
-        """
-
         try:
             issue_body = body + "\n\nAuthor: " + str(ctx.author)
             created_issue = await self.github.create_issue(title, issue_body)
@@ -130,17 +99,6 @@ class Git(commands.Cog):
     @commands.guild_only()
     @checks.has_pl(8)
     async def get_issue(self, ctx: commands.Context[awbot], issue_number: int) -> None:
-        """
-        Get an issue by issue number.
-
-        Parameters
-        ----------
-        ctx : commands.Context[awbot]
-            The context object for the command.
-        issue_number : int
-            The number of the issue to retrieve.
-        """
-
         try:
             issue = await self.github.get_issue(issue_number)
 

@@ -20,10 +20,6 @@ Explore the following pages for more detailed information on specific developmen
 * **[awbot CLI Usage](./docs/content/dev/cli/index.md)**
   * Understanding development vs. production modes (`--dev`, `--prod`).
   * Overview of command groups (`bot`, `db`, `dev`, `docker`).
-* **[Code Coverage](./docs/content/dev/coverage.md)**
-  * Running tests with coverage tracking.
-  * Generating and interpreting coverage reports.
-  * Using `awbot test run`, `awbot test coverage`, and related commands.
 * **[Database Management](./docs/content/dev/database.md)**
   * Detailed usage of `awbot db` commands (push, migrate, generate, pull, reset).
   * Working with Prisma migrations.

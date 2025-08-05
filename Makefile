@@ -68,38 +68,109 @@ run-dev: ## Run the bot in development mode
 	poetry run python -m awbot
 
 # Database
-db-generate: ## Generate Prisma client
+db-engines: ## Download Prisma engines
+	@echo "🔧 Setting up Prisma engines..."
+	@mkdir -p .prisma-engines
+	@COMMIT_HASH="393aa359c9ad4a4bb28630fb5613f9c281cde053"; \
+	BASE_URL="https://binaries.prisma.sh/all_commits/$$COMMIT_HASH/linux-musl"; \
+	for engine in query-engine schema-engine prisma-fmt; do \
+		if [ ! -f ".prisma-engines/$$engine" ]; then \
+			echo "  Downloading $$engine..."; \
+			if curl -fsSL "$$BASE_URL/$$engine" -o ".prisma-engines/$$engine.tmp"; then \
+				mv ".prisma-engines/$$engine.tmp" ".prisma-engines/$$engine"; \
+				chmod +x ".prisma-engines/$$engine"; \
+				echo "  ✅ $$engine downloaded successfully"; \
+			else \
+				echo "  ⚠️  Trying alternative URL..."; \
+				ALT_URL="https://binaries.prisma.sh/all_commits/$$COMMIT_HASH/linux/$$engine"; \
+				if curl -fsSL "$$ALT_URL" -o ".prisma-engines/$$engine.tmp"; then \
+					mv ".prisma-engines/$$engine.tmp" ".prisma-engines/$$engine"; \
+					chmod +x ".prisma-engines/$$engine"; \
+					echo "  ✅ $$engine downloaded successfully (alternative)"; \
+				else \
+					echo "  ❌ Failed to download $$engine"; \
+					rm -f ".prisma-engines/$$engine.tmp"; \
+				fi; \
+			fi; \
+		else \
+			echo "  ✅ $$engine already exists"; \
+		fi; \
+	done
+
+db-generate: db-engines ## Generate Prisma client
 	@echo "🗄️  Generating Prisma client..."
+	@export PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1 && \
+	export PRISMA_QUERY_ENGINE_BINARY="$(PWD)/.prisma-engines/query-engine" && \
+	export PRISMA_SCHEMA_ENGINE_BINARY="$(PWD)/.prisma-engines/schema-engine" && \
+	export PRISMA_FMT_BINARY="$(PWD)/.prisma-engines/prisma-fmt" && \
 	poetry run prisma generate
 
-db-migrate: ## Run database migrations
+db-migrate: db-engines ## Run database migrations
 	@echo "🗄️  Running database migrations..."
+	@export PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1 && \
+	export PRISMA_QUERY_ENGINE_BINARY="$(PWD)/.prisma-engines/query-engine" && \
+	export PRISMA_SCHEMA_ENGINE_BINARY="$(PWD)/.prisma-engines/schema-engine" && \
+	export PRISMA_FMT_BINARY="$(PWD)/.prisma-engines/prisma-fmt" && \
 	poetry run prisma migrate dev
 
-db-deploy: ## Deploy database migrations
+db-deploy: db-engines ## Deploy database migrations
 	@echo "🗄️  Deploying database migrations..."
+	@export PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1 && \
+	export PRISMA_QUERY_ENGINE_BINARY="$(PWD)/.prisma-engines/query-engine" && \
+	export PRISMA_SCHEMA_ENGINE_BINARY="$(PWD)/.prisma-engines/schema-engine" && \
+	export PRISMA_FMT_BINARY="$(PWD)/.prisma-engines/prisma-fmt" && \
 	poetry run prisma migrate deploy
 
-db-studio: ## Open Prisma Studio
+db-studio: db-engines ## Open Prisma Studio
 	@echo "🗄️  Opening Prisma Studio..."
+	@export PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1 && \
+	export PRISMA_QUERY_ENGINE_BINARY="$(PWD)/.prisma-engines/query-engine" && \
+	export PRISMA_SCHEMA_ENGINE_BINARY="$(PWD)/.prisma-engines/schema-engine" && \
+	export PRISMA_FMT_BINARY="$(PWD)/.prisma-engines/prisma-fmt" && \
 	poetry run prisma studio
 
-db-reset: ## Reset database
+db-reset: db-engines ## Reset database
 	@echo "🗄️  Resetting database..."
+	@export PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1 && \
+	export PRISMA_QUERY_ENGINE_BINARY="$(PWD)/.prisma-engines/query-engine" && \
+	export PRISMA_SCHEMA_ENGINE_BINARY="$(PWD)/.prisma-engines/schema-engine" && \
+	export PRISMA_FMT_BINARY="$(PWD)/.prisma-engines/prisma-fmt" && \
 	poetry run prisma migrate reset
 
 # Docker
 docker-build: ## Build Docker image
 	@echo "🐳 Building Docker image..."
-	docker build -t awbot .
+	@echo "🔄 Ensuring git submodules are initialized..."
+	@git submodule update --init --recursive
+	@docker build -t awbot .
 
 docker-run: ## Run Docker container
 	@echo "🐳 Running Docker container..."
-	docker run -it --env-file .env awbot
+	@if [ ! -f .env ]; then echo "⚠️  .env file not found, copying from .env.example"; cp .env.example .env; fi
+	@docker run -it --env-file .env awbot
 
 docker-dev: ## Run development Docker environment
 	@echo "🐳 Starting development Docker environment..."
-	docker-compose -f docker-compose.dev.yml up
+	@echo "🔄 Ensuring git submodules are initialized..."
+	@git submodule update --init --recursive
+	@docker-compose -f docker-compose.dev.yml up
+
+docker-build-dev: ## Build development Docker image
+	@echo "🐳 Building development Docker image..."
+	@echo "🔄 Ensuring git submodules are initialized..."
+	@git submodule update --init --recursive
+	@docker build --target dev -t awbot:dev .
+
+docker-build-prod: ## Build production Docker image
+	@echo "🐳 Building production Docker image..."
+	@echo "🔄 Ensuring git submodules are initialized..."
+	@git submodule update --init --recursive
+	@docker build --target production -t awbot:prod .
+
+docker-submodules: ## Initialize and update git submodules
+	@echo "🔄 Initializing and updating git submodules..."
+	@git submodule update --init --recursive
+	@echo "✅ Submodules updated"
 
 # Documentation
 docs-serve: ## Serve documentation locally
@@ -124,6 +195,12 @@ clean: ## Clean up generated files
 clean-venv: ## Remove virtual environment
 	@echo "🧹 Removing virtual environment..."
 	rm -rf .venv/
+
+clean-engines: ## Remove Prisma engines
+	@echo "🧹 Removing Prisma engines..."
+	rm -rf .prisma-engines/
+
+clean-all: clean clean-venv clean-engines ## Clean everything
 
 # Git hooks
 hooks-install: ## Install git hooks

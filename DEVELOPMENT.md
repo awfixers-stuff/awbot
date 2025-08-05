@@ -36,9 +36,10 @@ experimental-features = nix-command flakes
    This will automatically:
    - Set up the Nix development environment
    - Create a Python virtual environment in `.venv/`
+   - Download generic Linux Prisma engines (NixOS compatible)
    - Install all Python dependencies using Poetry
    - Install pre-commit hooks
-   - Generate the Prisma client
+   - Generate the Prisma client with custom engines
    - Provide helpful information about available commands
 
 3. Start developing! The environment is now ready.
@@ -81,6 +82,7 @@ The development environment provides:
 - **Python 3.13.5** with virtual environment management
 - **Poetry** for dependency management
 - **Node.js 20** and **Prisma** for database operations
+- **Custom Prisma engines** for NixOS compatibility
 - **Pre-commit hooks** for code quality
 - **Ruff** for linting and formatting
 - **Pyright** for type checking
@@ -183,6 +185,7 @@ awbot/
 ├── prisma/               # Database schema and migrations
 ├── config/               # Configuration files
 ├── .venv/                # Python virtual environment (auto-created)
+├── .prisma-engines/      # Downloaded Prisma engines (auto-created)
 ├── flake.nix             # Nix development environment
 ├── pyproject.toml        # Poetry configuration
 ├── Makefile              # Development commands
@@ -201,6 +204,28 @@ If you encounter issues with the virtual environment:
 make clean-venv
 make setup
 ```
+
+### Prisma Engine Issues
+
+If you encounter Prisma engine download or compatibility issues:
+
+```bash
+# Remove and re-download Prisma engines
+make clean-engines
+make db-engines
+
+# Or use the standalone script
+./scripts/download-prisma-engines.sh
+
+# Check engine status
+ls -la .prisma-engines/
+```
+
+Common Prisma engine error messages and solutions:
+
+- **"Precompiled engine files are not available for nixos"**: This is solved automatically by downloading generic Linux engines
+- **"404 Not Found" for engine checksums**: Set `PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1` (done automatically)
+- **"Permission denied" for engines**: Run `chmod +x .prisma-engines/*` to make engines executable
 
 ### Poetry Issues
 
@@ -288,6 +313,9 @@ make pre-commit
 When working with the database:
 
 ```bash
+# Download Prisma engines (done automatically, but can be run manually)
+make db-engines
+
 # Generate Prisma client after schema changes
 make db-generate
 
@@ -296,6 +324,30 @@ make db-migrate
 
 # Open Prisma Studio for data exploration
 make db-studio
+```
+
+### Prisma Engine Setup
+
+The development environment automatically downloads generic Linux Prisma engines to avoid NixOS compatibility issues. The engines are downloaded to `.prisma-engines/` and the following environment variables are set:
+
+```bash
+export PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1
+export PRISMA_QUERY_ENGINE_BINARY="$PROJECT_ROOT/.prisma-engines/query-engine"
+export PRISMA_SCHEMA_ENGINE_BINARY="$PROJECT_ROOT/.prisma-engines/schema-engine"
+export PRISMA_FMT_BINARY="$PROJECT_ROOT/.prisma-engines/prisma-fmt"
+export PRISMA_BINARIES_MIRROR="https://binaries.prisma.sh"
+export PRISMA_ENGINES_MIRROR="https://binaries.prisma.sh"
+export PRISMA_CLI_BINARY_TARGETS="linux-musl,native"
+```
+
+If you encounter Prisma engine issues, you can manually download them:
+
+```bash
+# Using the standalone script
+./scripts/download-prisma-engines.sh
+
+# Or using make
+make db-engines
 ```
 
 ## IDE Configuration
@@ -365,19 +417,109 @@ The built documentation will be in the `site/` directory.
 
 ## Docker Development
 
-### Building Docker Image
+AWBot supports both development and production Docker environments with automatic handling of git submodules and dependencies.
+
+### Prerequisites
+
+- Docker installed and running
+- Git submodules initialized (`git submodule update --init --recursive`)
+
+### Docker Commands
+
+#### Building Images
 
 ```bash
+# Build production image (recommended)
 make docker-build
+
+# Build development image with tools
+make docker-build-dev
+
+# Build production image (optimized)
+make docker-build-prod
+
+# Manual build with verbose output (for debugging)
+docker build --progress=plain -t awbot .
 ```
 
-### Running Development Environment with Docker
+#### Running Containers
 
 ```bash
+# Run production container
+make docker-run
+
+# Run development environment with docker-compose
 make docker-dev
+
+# Interactive shell in container (debugging)
+docker run -it awbot /bin/bash
 ```
 
-This uses `docker-compose.dev.yml` for the development environment.
+#### Git Submodules
+
+The project uses `discord.py` as a git submodule. Docker builds automatically handle this:
+
+```bash
+# Manually update submodules if needed
+make docker-submodules
+
+# Or directly
+git submodule update --init --recursive
+```
+
+### Docker Troubleshooting
+
+If you encounter Docker build issues:
+
+```bash
+# Run comprehensive troubleshooting script
+./scripts/docker-troubleshoot.sh
+
+# Common issues and solutions:
+# 1. "Path /app/discord.py does not exist"
+git submodule update --init --recursive
+
+# 2. Build cache issues
+docker system prune
+docker builder prune -f
+
+# 3. Permission issues (Linux)
+sudo usermod -aG docker $USER
+newgrp docker
+```
+
+### Environment Configuration
+
+```bash
+# Ensure .env file exists
+cp .env.example .env
+# Edit .env with your configuration
+
+# Required environment variables:
+# - DISCORD_TOKEN
+# - DATABASE_URL
+```
+
+### Docker Compose Development
+
+The `docker-compose.dev.yml` provides a complete development environment:
+
+```bash
+# Start development environment
+make docker-dev
+
+# Or manually
+docker-compose -f docker-compose.dev.yml up
+
+# Run in background
+docker-compose -f docker-compose.dev.yml up -d
+
+# View logs
+docker-compose -f docker-compose.dev.yml logs -f
+
+# Stop environment
+docker-compose -f docker-compose.dev.yml down
+```
 
 ## Contributing
 

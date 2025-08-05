@@ -7,8 +7,7 @@
             <img alt="CI" src="https://img.shields.io/github/actions/workflow/status/allthingslinux/awbot/ci.yml?branch=main&label=CI"></a>
         <a href="https://results.pre-commit.ci/latest/github/allthingslinux/awbot/main">
             <img alt="pre-commit.ci status" src="https://results.pre-commit.ci/badge/github/allthingslinux/awbot/main.svg"></a>
-        <a href="https://codecov.io/gh/allthingslinux/awbot">
-            <img alt="Codecov" src="https://codecov.io/gh/allthingslinux/awbot/graph/badge.svg?token=R0AUAS996W"></a>
+
         <a href="https://github.com/allthingslinux/awbot/commits/main">
             <img alt="Commit Activity" src="https://img.shields.io/github/commit-activity/m/allthingslinux/awbot"></a>
         <a href="https://github.com/allthingslinux/awbot/releases">
@@ -19,7 +18,7 @@
             <img alt="GitHub forks" src="https://img.shields.io/github/forks/allthingslinux/awbot"></a>
         <a href="https://github.com/allthingslinux/awbot/graphs/contributors">
             <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/allthingslinux/awbot"></a>
-        <a href="https://github.com/allthingslinux/awbot/issues">
+        <a href="https://github.com/awfixers-stuff/awbot/issues">
             <img alt="Issues" src="https://img.shields.io/github/issues/allthingslinux/awbot"></a>
         <a href="https://github.com/allthingslinux/awbot">
             <img alt="Repo size" src="https://img.shields.io/github/repo-size/allthingslinux/awbot"></a>
@@ -29,13 +28,13 @@
             <img alt="Poetry" src="https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json"></a>
         <a href="https://github.com/allthingslinux/awbot/blob/main/LICENSE">
             <img alt="License" src="https://img.shields.io/github/license/allthingslinux/awbot"></a>
-        <a href="https://discord.gg/linux">
+        <a href="https://inv.wtf/deadinside">
             <img alt="Discord" src="https://img.shields.io/discord/1172245377395728464?logo=discord"></a>
     </p>
 </div>
 
 > [!WARNING]
-**This bot is still a work in progress and issues are expected. If you self-host our bot please join our support server [on Discord](https://discord.gg/gpmSjcjQxg) for announcements and support.**
+**This bot is still a work in progress and issues are expected. If you self-host our bot please join our support server [on Discord](https://inv.wtf/deadinside) for announcements and support.**
 
 ## Table of Contents
 

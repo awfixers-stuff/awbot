@@ -33,33 +33,20 @@
   "python.testing.unittestEnabled": true,
   "python.testing.cwd": "${workspaceFolder}",
   "python.testing.autoTestDiscoverOnSaveEnabled": true,
-  "coverage-gutters.coverageFileNames": [
-    "coverage.xml",
-    "coverage.lcov",
-    "cov.xml",
-    "gcov.out",
-    "jacoco.xml",
-    "lcov.info"
-  ],
-  "coverage-gutters.showGutterCoverage": false,
-  "coverage-gutters.showLineCoverage": true,
-  "coverage-gutters.showRulerCoverage": true,
+
   "python.terminal.executeInFileDir": false,
   "python.terminal.launchArgs": [],
   "files.exclude": {
     "**/__pycache__": true,
     "**/*.pyc": true,
     "**/pycache": true,
-    "**/.pytest_cache": true,
-    "**/htmlcov": true,
-    "**/.coverage": true
+    "**/.pytest_cache": true
   },
   "search.exclude": {
     ".archive/**": true,
     "build/**": true,
     "typings/**": true,
     ".pytest_cache/**": true,
-    "htmlcov/**": true,
     ".tox/**": true
   },
   "git.autofetch": true,

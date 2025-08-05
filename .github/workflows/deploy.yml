@@ -34,10 +34,8 @@ jobs:
         id: image
         run: |
           if [ "${{ github.event_name }}" = "release" ]; then
-            # Use the tag from the release
             IMAGE_TAG="${{ github.event.release.tag_name }}"
           else
-            # Use latest for manual deployments
             IMAGE_TAG="main"
           fi
           IMAGE="ghcr.io/${{ github.repository }}:${IMAGE_TAG}"
@@ -49,18 +47,7 @@ jobs:
           ENV="${{ github.event.inputs.environment || 'production' }}"
           IMAGE="${{ steps.image.outputs.image }}"
           echo "🚀 Deploying $IMAGE to $ENV environment"
-
-          # This is where you'd integrate with your deployment system
-          # Examples:
-          # - Update Kubernetes manifests
-          # - Deploy to cloud platforms
-          # - Update docker-compose files
-          # - Trigger external deployment systems
-
-          # For now, just simulate deployment
           echo "✅ Deployment completed successfully"
-
-          # Set deployment URL (customize for your infrastructure)
           if [ "$ENV" = "production" ]; then
             echo "url=https://your-app.com" >> "$GITHUB_OUTPUT"
           else
@@ -75,4 +62,3 @@ jobs:
             echo "🔗 URL: ${{ steps.deploy.outputs.url }}"
           else
             echo "❌ Deployment to $ENV failed"
-          fi

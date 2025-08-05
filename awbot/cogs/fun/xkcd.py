@@ -24,17 +24,6 @@ class Xkcd(commands.Cog):
     )
     @commands.guild_only()
     async def xkcd(self, ctx: commands.Context[awbot], comic_id: int | None = None) -> None:
-        """
-        xkcd related commands.
-
-        Parameters
-        ----------
-        ctx : commands.Context[awbot]
-            The context object for the command.
-        comic_id : int | None
-            The ID of the xkcd comic to search for.
-        """
-
         if comic_id:
             await self.specific(ctx, comic_id)
         else:
@@ -46,17 +35,7 @@ class Xkcd(commands.Cog):
     )
     @commands.guild_only()
     async def latest(self, ctx: commands.Context[awbot]) -> None:
-        """
-        Get the latest xkcd comic.
-
-        Parameters
-        ----------
-        ctx : commands.Context[awbot]
-            The context object for the command.
-        """
-
         embed, view, ephemeral = await self.get_comic_and_embed(latest=True)
-
         if view:
             await ctx.send(embed=embed, view=view, ephemeral=ephemeral)
         else:
@@ -68,17 +47,7 @@ class Xkcd(commands.Cog):
     )
     @commands.guild_only()
     async def random(self, ctx: commands.Context[awbot]) -> None:
-        """
-        Get a random xkcd comic.
-
-        Parameters
-        ----------
-        ctx : commands.Context[awbot]
-            The context object for the
-        """
-
         embed, view, ephemeral = await self.get_comic_and_embed()
-
         if view:
             await ctx.send(embed=embed, view=view, ephemeral=ephemeral)
         else:
@@ -90,19 +59,7 @@ class Xkcd(commands.Cog):
     )
     @commands.guild_only()
     async def specific(self, ctx: commands.Context[awbot], comic_id: int) -> None:
-        """
-        Get a specific xkcd comic.
-
-        Parameters
-        ----------
-        ctx : commands.Context[awbot]
-            The context object for the command.
-        comic_id : int
-            The ID of the comic to search for.
-        """
-
         embed, view, ephemeral = await self.get_comic_and_embed(number=comic_id)
-
         if view:
             await ctx.send(embed=embed, view=view, ephemeral=ephemeral)
         else:
@@ -113,9 +70,6 @@ class Xkcd(commands.Cog):
         latest: bool = False,
         number: int | None = None,
     ) -> tuple[discord.Embed, discord.ui.View | None, bool]:
-        """
-        Get the xkcd comic and create an embed.
-        """
         try:
             if latest:
                 comic = self.client.get_latest_comic(raw_comic_image=True)
