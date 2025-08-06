@@ -1,0 +1,63 @@
+name: Deploy AwBot
+
+on:
+  workflow_dispatch:
+
+env:
+  # Load global environment variables from the centralized template
+  ENV_FILE: awbot/envs/.env
+
+jobs:
+  deploy-bot:
+    name: Deploy Bot Service
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Copy global .env.example to bot/.env
+        run: |
+          cp $ENV_FILE awbot/envs/bot/.env
+
+      - name: Install dependencies
+        run: |
+          cd awbot
+          pip install -r requirements.txt || true
+
+      - name: Install dependencies
+        run: |
+          cd awbot
+          if [ -f package.json ]; then
+            npm ci
+          fi
+
+      - name: Run bot (example)
+        env:
+          # Load environment variables from .env file
+          BOT_ENV_FILE: awbot/envs/bot/.env
+        run: |
+          cd awbot
+          # Example: source .env and run bot
+          set -a
+          [ -f "$BOT_ENV_FILE" ] && source "$BOT_ENV_FILE"
+          set +a
+          # Replace with your actual bot start command
+          python bot/main.py || node bot/main.js || echo "No bot entry found"
+
+      - name: Post-deployment steps
+        run: echo "Deployment complete!"
+# Notes:
+# - This workflow demonstrates how to use a centralized global .env file for deployment.
+# - You can duplicate and adapt this workflow for other bot components (cloud, djs, dpy).
+# - For secrets, use GitHub Actions secrets instead of hardcoding sensitive values.
