@@ -285,7 +285,7 @@ Planned additions:
 ### How Coverage Works
 
 1. **Local Development**: Use `awbot test coverage` commands for flexible coverage control
-2. **CI Pipeline**: Automatic coverage reporting to [CodeCov](https://codecov.io/gh/allthingslinux/awbot)
+2. **CI Pipeline**: Automatic coverage reporting to [CodeCov](https://codecov.io/gh/awfixers-stuff/awbot)
 3. **Pull Requests**: Coverage reports appear as PR comments
 4. **Component Tracking**: Different coverage targets for different components
 
@@ -326,7 +326,7 @@ poetry run awbot test coverage --format=xml
 
 ### CodeCov Dashboard
 
-Visit [codecov.io/gh/allthingslinux/awbot](https://codecov.io/gh/allthingslinux/awbot) to:
+Visit [codecov.io/gh/awfixers-stuff/awbot](https://codecov.io/gh/awfixers-stuff/awbot) to:
 
 - View overall project coverage
 - See component-specific coverage
@@ -431,7 +431,7 @@ poetry run awbot test benchmark
 - **Pytest Documentation**: [docs.pytest.org](https://docs.pytest.org/)
 - **Discord.py Testing**: [https://dpy.awfixerbots.xyz](https://dpy.awfixerbots.xyz/)
 - **CodeCov Documentation**: [docs.codecov.com](https://docs.codecov.com/)
-- **Project CodeCov Dashboard**: [codecov.io/gh/allthingslinux/awbot](https://codecov.io/gh/allthingslinux/awbot)
+- **Project CodeCov Dashboard**: [codecov.io/gh/awfixers-stuff/awbot](https://codecov.io/gh/awfixers-stuff/awbot)
 
 ## 🤝 Contributing
 

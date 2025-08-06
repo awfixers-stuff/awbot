@@ -101,7 +101,7 @@ class TestDockerSafety:
         safe_resources = [
             "awbot:latest",
             "awbot:test-dev",
-            "ghcr.io/allthingslinux/awbot:main",
+            "ghcr.io/awfixers-stuff/awbot:main",
             "awbot-dev",
             "awbot_dev_cache",
         ]
@@ -117,7 +117,7 @@ class TestDockerSafety:
 
         # Test patterns (copied from docker_toolkit for self-contained testing)
         test_patterns = {
-            "images": [r"^awbot:.*", r"^ghcr\.io/allthingslinux/awbot:.*"],
+            "images": [r"^awbot:.*", r"^ghcr\.io/awfixers-stuff/awbot:.*"],
             "containers": [r"^(awbot(-dev|-prod)?|memory-test|resource-test)$"],
             "volumes": [r"^awbot(_dev)?_(cache|temp)$"],
             "networks": [r"^awbot_default$", r"^awbot-.*"],

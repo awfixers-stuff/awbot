@@ -47,13 +47,13 @@ FROM python:3.13.5-slim@sha256:4c2cf9917bd1cbacc5e9b07320025bdb7cdf2df7b0ceaccb5
 
 # OCI Labels for container metadata and registry compliance
 # These labels provide important metadata for container registries and tools
-LABEL org.opencontainers.image.source="https://github.com/allthingslinux/awbot" \
-      org.opencontainers.image.description="awbot - The all in one discord bot for the All Things Linux Community" \
-      org.opencontainers.image.licenses="GPL-3.0" \
-      org.opencontainers.image.authors="All Things Linux" \
-      org.opencontainers.image.vendor="All Things Linux" \
-      org.opencontainers.image.title="awbot" \
-      org.opencontainers.image.documentation="https://github.com/allthingslinux/awbot/blob/main/README.md"
+LABEL org.opencontainers.image.source="https://github.com/awfixers-stuff/awbot" \
+    org.opencontainers.image.description="awbot - The all in one discord bot for the AJ's Basement Community" \
+    org.opencontainers.image.licenses="GPL-3.0" \
+    org.opencontainers.image.authors="AWFixer and Friends" \
+    org.opencontainers.image.vendor="AWFixer and Friends" \
+    org.opencontainers.image.title="awbot" \
+    org.opencontainers.image.documentation="https://github.com/awfixers-stuff/awbot/blob/main/README.md"
 
 # Create non-root user early for security best practices
 # Using system user (no login shell) with fixed UID/GID for consistency
@@ -81,13 +81,13 @@ RUN echo 'path-exclude /usr/share/doc/*' > /etc/dpkg/dpkg.cfg.d/01_nodoc && \
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y --no-install-recommends --no-install-suggests \
-        ffmpeg=7:5.1.6-0+deb12u1 \
-        git=1:2.39.5-0+deb12u2 \
-        libcairo2=1.16.0-7 \
-        libgdk-pixbuf2.0-0=2.40.2-2 \
-        libpango1.0-0=1.50.12+ds-1 \
-        libpangocairo-1.0-0=1.50.12+ds-1 \
-        shared-mime-info=2.2-1 \
+    ffmpeg=7:5.1.6-0+deb12u1 \
+    git=1:2.39.5-0+deb12u2 \
+    libcairo2=1.16.0-7 \
+    libgdk-pixbuf2.0-0=2.40.2-2 \
+    libpango1.0-0=1.50.12+ds-1 \
+    libpangocairo-1.0-0=1.50.12+ds-1 \
+    shared-mime-info=2.2-1 \
     # Cleanup package manager caches to reduce layer size
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
@@ -121,14 +121,14 @@ FROM base AS build
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y --no-install-recommends \
-        # GCC compiler and build essentials for native extensions
-        build-essential=12.9 \
-        # Additional utilities required by some Python packages
-        findutils=4.9.0-4 \
-        # Development headers for graphics libraries
-        libcairo2-dev=1.16.0-7 \
-        # Foreign Function Interface library for Python extensions
-        libffi-dev=3.4.4-1 \
+    # GCC compiler and build essentials for native extensions
+    build-essential=12.9 \
+    # Additional utilities required by some Python packages
+    findutils=4.9.0-4 \
+    # Development headers for graphics libraries
+    libcairo2-dev=1.16.0-7 \
+    # Foreign Function Interface library for Python extensions
+    libffi-dev=3.4.4-1 \
     # Cleanup to reduce intermediate layer size
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
@@ -208,15 +208,15 @@ ARG BUILD_DATE=""
 # SECURITY: Git operations happen outside container, only VERSION string is passed in
 RUN set -eux; \
     if [ -n "$VERSION" ]; then \
-        # Use provided version from build args (preferred for all builds)
-        echo "Using provided version: $VERSION"; \
-        echo "$VERSION" > /app/VERSION; \
+    # Use provided version from build args (preferred for all builds)
+    echo "Using provided version: $VERSION"; \
+    echo "$VERSION" > /app/VERSION; \
     else \
-        # Fallback for builds without version info
-        # NOTE: .git directory is excluded by .dockerignore for security/performance
-        # Version should be passed via --build-arg VERSION=$(git describe --tags --always --dirty | sed 's/^v//')
-        echo "No version provided, using fallback"; \
-        echo "dev" > /app/VERSION; \
+    # Fallback for builds without version info
+    # NOTE: .git directory is excluded by .dockerignore for security/performance
+    # Version should be passed via --build-arg VERSION=$(git describe --tags --always --dirty | sed 's/^v//')
+    echo "No version provided, using fallback"; \
+    echo "dev" > /app/VERSION; \
     fi; \
     echo "Building version: $(cat /app/VERSION)"
 
@@ -251,11 +251,11 @@ RUN set -eux; \
     # Conditionally install zsh for enhanced development experience
     # Only installs if DEVCONTAINER build arg is set to 1
     if [ "$DEVCONTAINER" = "1" ]; then \
-        apt-get update && \
-        apt-get install -y --no-install-recommends zsh=5.9-4+b6 && \
-        chsh -s /usr/bin/zsh && \
-        apt-get clean && \
-        rm -rf /var/lib/apt/lists/*; \
+    apt-get update && \
+    apt-get install -y --no-install-recommends zsh=5.9-4+b6 && \
+    chsh -s /usr/bin/zsh && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*; \
     fi; \
     # Create application cache and temporary directories
     # These directories are used by the bot for caching and temporary files
@@ -294,13 +294,13 @@ FROM python:3.13.5-slim@sha256:4c2cf9917bd1cbacc5e9b07320025bdb7cdf2df7b0ceaccb5
 
 # Duplicate OCI labels for production image metadata
 # COMPLIANCE: Ensures production images have proper metadata for registries
-LABEL org.opencontainers.image.source="https://github.com/allthingslinux/awbot" \
-      org.opencontainers.image.description="awbot - The all in one discord bot for the All Things Linux Community" \
-      org.opencontainers.image.licenses="GPL-3.0" \
-      org.opencontainers.image.authors="All Things Linux" \
-      org.opencontainers.image.vendor="All Things Linux" \
-      org.opencontainers.image.title="awbot" \
-      org.opencontainers.image.documentation="https://github.com/allthingslinux/awbot/blob/main/README.md"
+LABEL org.opencontainers.image.source="https://github.com/awfixers-stuff/awbot" \
+    org.opencontainers.image.description="awbot - The all in one discord bot for the AJ's Basement Community" \
+    org.opencontainers.image.licenses="GPL-3.0" \
+    org.opencontainers.image.authors="AWFixer and Friends" \
+    org.opencontainers.image.vendor="AWFixer and Friends" \
+    org.opencontainers.image.title="awbot" \
+    org.opencontainers.image.documentation="https://github.com/awfixers-stuff/awbot/blob/main/README.md"
 
 # Create non-root user (same as base stage)
 # SECURITY: Consistent user across all stages for permission compatibility
@@ -326,9 +326,9 @@ RUN echo 'path-exclude /usr/share/doc/*' > /etc/dpkg/dpkg.cfg.d/01_nodoc && \
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y --no-install-recommends --no-install-suggests \
-        libcairo2=1.16.0-7 \
-        libffi8=3.4.4-1 \
-        coreutils=9.1-1 \
+    libcairo2=1.16.0-7 \
+    libffi8=3.4.4-1 \
+    coreutils=9.1-1 \
     # Aggressive cleanup to minimize image size
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
@@ -408,21 +408,21 @@ RUN set -eux; \
     # Remove test directories from installed packages (but preserve prisma binaries)
     # These directories contain test files that are not needed in production
     for test_dir in tests testing "*test*"; do \
-        find /app/.venv -name "$test_dir" -type d -not -path "*/prisma*" -exec rm -rf {} + 2>/dev/null || true; \
+    find /app/.venv -name "$test_dir" -type d -not -path "*/prisma*" -exec rm -rf {} + 2>/dev/null || true; \
     done; \
     \
     # Remove documentation files from installed packages (but preserve prisma docs)
     # These files take up significant space and are not needed in production
     for doc_pattern in "*.md" "*.txt" "*.rst" "LICENSE*" "NOTICE*" "COPYING*" "CHANGELOG*" "README*" "HISTORY*" "AUTHORS*" "CONTRIBUTORS*"; do \
-        find /app/.venv -name "$doc_pattern" -not -path "*/prisma*" -delete 2>/dev/null || true; \
+    find /app/.venv -name "$doc_pattern" -not -path "*/prisma*" -delete 2>/dev/null || true; \
     done; \
     \
     # Remove large development packages that are not needed in production
     # These packages (pip, setuptools, wheel) are only needed for installing packages
     # NOTE: Preserving packages that Prisma might need
     for pkg in setuptools wheel pkg_resources; do \
-        rm -rf /app/.venv/lib/python3.13/site-packages/${pkg}* 2>/dev/null || true; \
-        rm -rf /app/.venv/bin/${pkg}* 2>/dev/null || true; \
+    rm -rf /app/.venv/lib/python3.13/site-packages/${pkg}* 2>/dev/null || true; \
+    rm -rf /app/.venv/bin/${pkg}* 2>/dev/null || true; \
     done; \
     rm -rf /app/.venv/bin/easy_install* 2>/dev/null || true; \
     \

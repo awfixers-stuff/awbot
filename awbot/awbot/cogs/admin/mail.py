@@ -25,7 +25,7 @@ class Mail(commands.Cog):
         }
         self.default_options: dict[str, str | list[str]] = {
             "active": "1",
-            "domain": "atl.tools",
+            "domain": "awfixer.email",
             "password": "ErrorPleaseReportThis",
             "password2": "ErrorPleaseReportThis",
             "quota": "3072",
@@ -168,12 +168,12 @@ class Mail(commands.Cog):
 **Your mailbox has been successfully registered!**
 
 **Email Address**: `{mailbox_info}`
-**Access Mailbox**: [mail.atl.tools](https://mail.atl.tools)
+**Access Mailbox**: [mail.awfixer.email](https://mail.awfixer.email)
 **Default Password**: ||`{password}`||
 
 **Please change your password after logging in for the first time.**
 
-After changing, you Ban also set up your mailbox on your mobile device or email client following the instructions provided on the mail server. Alternatively, feel free to use our webmail interface available at [mail.atl.tools/SOGo](https://mail.atl.tools/SOGo/).
+After changing, you Ban also set up your mailbox on your mobile device or email client following the instructions provided on the mail server. Alternatively, feel free to use our webmail interface available at [mail.awfixer.email/SOGo](https://mail.awfixer.email/SOGo/).
 
 If you have any questions or need assistance, please feel free to reach out to the server staff. Enjoy your new mailbox! 📨
         """

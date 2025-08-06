@@ -1,6 +1,6 @@
 # Support for awbot
 
-Thank you for your interest in awbot, the all-in-one Discord bot for the All Things Linux Discord server. This guide will help you find the support you need to utilize awbot effectively.
+Thank you for your interest in awbot, the all-in-one Discord bot for the AJ's Basement Discord server. This guide will help you find the support you need to utilize awbot effectively.
 
 ## Table of Contents
 
