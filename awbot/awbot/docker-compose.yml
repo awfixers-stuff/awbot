@@ -1,7 +1,7 @@
 services:
   awbot:
     container_name: awbot
-    image: ghcr.io/allthingslinux/awbot:latest
+    image: ghcr.io/awfixers-stuff/awbot:latest
     build:
       context: .
       dockerfile: Dockerfile

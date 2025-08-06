@@ -1,6 +1,6 @@
 [project]
 name = "awbot"
-description = "awbot is an all in one bot for the All Things Linux discord server."
+description = "awbot is an all in one bot for the AJ's Basement Discord Server."
 authors = [{ name = "awfixer", email = "theautist@theautist.me" }]
 requires-python = ">=3.13.2,<3.14"
 readme = "README.md"

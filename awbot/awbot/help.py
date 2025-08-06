@@ -527,7 +527,7 @@ class awbotHelp(commands.HelpCommand):
         else:
             embed = self._embed_base(
                 "Hello! Welcome to the help command.",
-                "awbot is an all-in-one bot by the All Things Linux Discord server. The bot is written in Python using discord.py, and we are actively seeking contributors.",
+                "awbot is an all-in-one bot by the AJ's Basement Discord server. The bot is written in Python using discord.py, and we are actively seeking contributors.",
             )
 
         await self._add_bot_help_fields(embed)
@@ -731,7 +731,7 @@ class awbotHelp(commands.HelpCommand):
         )
         embed.add_field(
             name="GitHub Repository",
-            value="-# [Help contribute! View Repo](https://github.com/allthingslinux/awbot)",
+            value="-# [Help contribute! View Repo](https://github.com/awfixers-stuff/awbot)",
             inline=True,
         )
 

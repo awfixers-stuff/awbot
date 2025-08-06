@@ -17,7 +17,7 @@ experimental-features = nix-command flakes
 ## One-Command Setup
 
 ```bash
-git clone https://github.com/allthingslinux/awbot.git
+git clone https://github.com/awfixers-stuff/awbot.git
 cd awbot
 nix develop
 ```

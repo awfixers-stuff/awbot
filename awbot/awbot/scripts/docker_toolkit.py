@@ -28,7 +28,7 @@ LOGS_DIR = Path("logs")
 SAFE_RESOURCE_PATTERNS = {
     "images": [
         r"^awbot:.*",
-        r"^ghcr\.io/allthingslinux/awbot:.*",
+        r"^ghcr\.io/awfixers-stuff/awbot:.*",
         r"^awbot:(test|fresh|cached|switch-test|regression|perf-test)-.*",
         r"^awbot:(multiplatform|security)-test$",
     ],

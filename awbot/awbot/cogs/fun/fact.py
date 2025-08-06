@@ -93,7 +93,7 @@ class Fact(commands.Cog):
                 title=f"Fun Fact ({category})",
                 description=fact,
                 custom_author_text="Click here to submit more facts!",
-                custom_author_text_url="https://github.com/allthingslinux/awbot/blob/main/assets/data/facts.toml",
+                custom_author_text_url="https://github.com/awfixers-stuff/awbot/blob/main/assets/data/facts.toml",
             )
         else:
             names = [

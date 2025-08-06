@@ -17,7 +17,7 @@ BOT_INFO:
       {"type": "watching", "name": "{member_count} members"},
       {"type": "listening", "name": "{guild_count} guilds"},
       {"type": "playing", "name": "{bot_name} {bot_version}"},
-      {"type": "watching", "name": "All Things Linux"},
+      {"type": "watching", "name": "AWFixer and Friends"},
       {"type": "playing", "name": "with fire"},
       {"type": "watching", "name": "linux tech tips"},
       {"type": "listening", "name": "mpd"},

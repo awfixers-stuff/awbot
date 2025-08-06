@@ -40,7 +40,7 @@ jobs:
       issues: write
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@8edcb1bdb4e267140fa742c62e395cd74f332709
         with:
           fetch-depth: 0
       - name: Convert TODOs to Issues
@@ -84,7 +84,7 @@ jobs:
       issues: write
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@8edcb1bdb4e267140fa742c62e395cd74f332709
       - name: Check for large files
         run: |
           echo "Checking for files larger than 50MB..."

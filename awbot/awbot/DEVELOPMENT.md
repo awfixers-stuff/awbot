@@ -24,7 +24,7 @@ experimental-features = nix-command flakes
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/allthingslinux/awbot.git
+   git clone https://github.com/awfixers-stuff/awbot.git
    cd awbot
    ```
 
@@ -48,7 +48,7 @@ experimental-features = nix-command flakes
 
 1. Clone the repository and enter the Nix shell:
    ```bash
-   git clone https://github.com/allthingslinux/awbot.git
+   git clone https://github.com/awfixers-stuff/awbot.git
    cd awbot
    make dev
    ```
@@ -64,7 +64,7 @@ experimental-features = nix-command flakes
 
 2. Clone the repository:
    ```bash
-   git clone https://github.com/allthingslinux/awbot.git
+   git clone https://github.com/awfixers-stuff/awbot.git
    cd awbot
    ```
 
@@ -536,7 +536,7 @@ docker-compose -f docker-compose.dev.yml down
 - Check the [main README](README.md) for general project information
 - Review the [Docker documentation](DOCKER.md) for container-specific setup
 - Look at existing code and tests for examples
-- Join the All Things Linux Discord server for community support
+- Join the AJ's Basement Discord server for community support
 
 ## Advanced Usage
 
