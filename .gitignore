@@ -1,9 +1,9 @@
 node_modules/
-.env
+*.env
 .env.local
 .env.prod
 .pcommit
-.lock
+*.lock
 pnpm-lock.yaml
 package-lock.json
 .direnv/
