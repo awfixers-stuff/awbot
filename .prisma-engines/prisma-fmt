@@ -1,3 +1,0 @@
-#!/bin/bash
-echo "Prisma engine not available - please run: make db-engines" >&2
-exit 1

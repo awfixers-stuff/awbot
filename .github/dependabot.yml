@@ -1,0 +1,26 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/dashboard"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/docs"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/awbot"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/ai-tooling"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "gomod"
+    directory: "/api"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"

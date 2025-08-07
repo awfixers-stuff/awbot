@@ -1,11 +1,132 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Build and distribution
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
 node_modules/
-.env
-.env.local
-.env.prod
-.pcommit
-.lock
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+*.manifest
+*.spec
+
+# Caches and temp files
+.cache
+.hypothesis/
+.mypy_cache/
+.nox/
+.pybuilder/
+.pyre/
+.pytype/
+.pytest_cache/
+.ruff_cache/
+.tox/
+__pypackages__/
+cython_debug/
+dmypy.json
+.webassets-cache
+
+# Cloud and infrastructure (new section for your kube/Terraform goodies)
+*.kubeconfig
+kubeconfig
+*.tfstate
+*.tfstate.*
+
+# Coverage and testing
+*.cover
+*.py,cover
+cover/
+nosetests.xml
+
+# Databases and Prisma
+.prisma-engines/
+prisma/database.db
+prisma_binaries/
+db.sqlite3
+db.sqlite3-journal
+
+# Documentation and sites
+docs/_build/
+docs-build/
+docs/site/
+site/
+
+# Environments and configs
+.*env*
+.venv
+env/
+env.bak
+venv/
+Pipfile.lock
+poetry.lock
 pnpm-lock.yaml
 package-lock.json
+*.lock
+local_settings.py
+config/settings*
+!config/settings.yml.example
+ipython_config.py
+profile_default/
+
+# Extensions and project-specific
+awbot/extensions/*
+!awbot/extensions/README.md
+!awbot/extensions/__init__.py
+awbot/logs/
+logs/
+
+# IDEs and editors
+.idea/
+.ropeproject
+.spyderproject
+.spyproject
 .direnv/
-__pycache__
-*.pyc
+
+# Installers and logs
+pip-log.txt
+pip-delete-this-directory.txt
+*.log
+celerybeat-schedule
+celerybeat.pid
+
+# Jupyter and IPython
+.ipynb_checkpoints
+
+# Languages and extensions
+*.mo
+*.pot
+*.replit
+*.sage.py
+*.so
+
+# Miscellaneous (open-source friendly additions)
+.DS_Store
+.archive/
+.binaries/
+.debug.csv
+.pcommit
+.pdm.toml
+.scrapy
+slim.report.json
+github-private-key.pem
+reports/
+target/
+# Ignore CI/CD artifacts if using GitHub Actions, etc.
+.github/workflows/*.yml~
+LICENSE.*
