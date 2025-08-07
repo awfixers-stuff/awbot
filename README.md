@@ -2,9 +2,15 @@
 
 # Open Sourced under the GPLv3 or later License.
 
+# Partners and Sponsors:
+
+![[OpenStatus](https://openstatus.dev)](./assets/)
+
+![[Digital Ocean](https://digitalocean.com)](./assets/branding/digitalocean.png)
+
 
 <details>
-<summary>Table of Contents (Markdown)</summary>
+<summary>Table of Contents</summary>
 
 - [AWBot](#awbot)
 - [License](#open-sourced-under-the-gplv3-or-later-license)
