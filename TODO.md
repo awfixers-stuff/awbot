@@ -1,5 +1,11 @@
 # AWBot Todo
 
+<div align="center">
+
+# Currently the biggest todo is to merge update PRs, write workflows for checks and test, impliment code coverage testing and fix the development enviorment setup and management.
+
+</div>
+
 ## AI Tooling
 
 We are going to impliment better proxying and better security in the AI tooling so that queries are sent back and forth correctly, efficiently, and securely. We want to be able to provide near real time interactions. You can find ai tooling [here](/ai-tooling)
@@ -7,52 +13,295 @@ We are going to impliment better proxying and better security in the AI tooling 
 ## API
 
 
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+
+
 ## Assets
+
+
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
 
 
 ## AWBot
 
 
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+
+
 ### AI
+
+
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+
 
 ### Cli
 
+
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+
+
 ### Cogs
+
+
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+
 
 ### Config
 
+
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+
+
 ### Database
+
+
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+
 
 ### Extensions
 
+
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+
+
 ### Handlers
+
+
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+
 
 ### Scripts
 
+
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+
+
 ### Tests
+
+
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+
 
 ### Typings
 
+
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+
+
 ### UI
+
+
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+
 
 ### Utils
 
+
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+
+
 ### Wrappers
+
+
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
 
 
 ## CloudConfig
 
 
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+
+
 ## Dashboard
+
+
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
 
 
 ## Docs
 
 
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+
+
 ## Envs
 
 
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+
+
 ## Makes
+
+
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
 
 
 ## Prisma
@@ -64,4 +313,27 @@ see next
 ## Dev Env Management
 I have been working on a flake.nix file and the appropriate .envrc config to load all the variable from [envs](envs) and move them to the right directory. I have the scripts [install-deps.sh](install-deps.sh), [install_deps.js](install_deps.js), [install-all.sh](install-all.sh), and [orchestrate.py](orchestrate.py). I am determining where to use each of these in the various other scripts to ensure that development, deployment and updates of the bot go down without a hitch.
 
+
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+
+
 ## Automation and Orchistration
+
+
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []
+- []

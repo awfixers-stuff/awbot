@@ -33,9 +33,21 @@
 <br/>
 [Tech Stack](#tech-stack)
 <br/>
-[Github Contributers](#github-contributers)
+[](#)
 <br/>
-[Star History](#star-history)
+[](#)
+<br/>
+[](#)
+<br/>
+[](#)
+<br/>
+[](#)
+<br/>
+[](#)
+<br/>
+[](#)
+<br/>
+[](#)
 <br/>
 
 </details>
@@ -105,6 +117,7 @@ our local CI is built from the old discontinued project Makes, we have look thru
 
 <div align="center">
 
+<!--
 # Github Contributers
 
 <a href="https://github.com/awfixers-stuff/awbot/graphs/contributors">
@@ -121,3 +134,4 @@ Made with [contrib.rocks](https://contrib.rocks).
   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=awfixers-stuff/awbot&type=Date" />
   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=awfixers-stuff/awbot&type=Date" />
 </picture>
+-->
