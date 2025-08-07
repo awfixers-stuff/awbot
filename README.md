@@ -47,7 +47,7 @@ We (royally) decided that we wanted to make a bot that is able to do everything 
 <details>
 <summary>Tech Stack TOC</summary>
 
-- [AWBot](#awbot)
+- [AWBot](###awbot)
 - [Dashboard](#dashboard)
 - [Docs](#docs)
 - [API](#api)
