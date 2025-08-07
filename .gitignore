@@ -9,3 +9,4 @@ package-lock.json
 .direnv/
 __pycache__
 *.pyc
+*.sum
