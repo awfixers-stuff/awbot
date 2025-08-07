@@ -14,25 +14,26 @@
 
 [![Digital Ocean](./assets/branding/digitalocean.png)](https://digitalocean.com)
 
-
-</div>
+<br />
 
 <h1>
 
 <details>
 <summary>Table of Contents</summary>
 
-- [AWBot](#awbot)
-- [License](#open-sourced-under-the-gplv3-or-later-license)
-- [Table of Contents](#table-of-contents)
-- [Background](#background)
-- [Tech Stack](#tech-stack)
--
-- [Github Contributers](#github-contributers)
-- [Star History](#star-history)
+[AWBot](#awbot)
+[License](#open-sourced-under-the-gplv3-or-later-license)
+[Table of Contents](#table-of-contents)
+[Background](#background)
+[Tech Stack](#tech-stack)
+[Github Contributers](#github-contributers)
+[Star History](#star-history)
+
 </details>
 
 </h1>
+
+</div>
 
 # Background:
 
