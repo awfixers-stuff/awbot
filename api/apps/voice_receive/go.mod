@@ -4,7 +4,7 @@ go 1.23.0
 
 require (
 	github.com/bwmarrin/discordgo v0.29.0
-	github.com/pion/rtp v1.6.2
+	github.com/pion/rtp v1.8.21
 	github.com/pion/webrtc/v3 v3.0.15
 )
 
