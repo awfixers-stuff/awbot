@@ -2,12 +2,16 @@
 
 # Open Sourced under the GPLv3 or later License.
 
+<div align="center">
+
 # Partners and Sponsors:
 
-[![OpenStatus](./assets/branding/openstatus.png)](https://openstatus.dev)
+[![OpenStatus](./assets/branding/openstatus.svg)](https://openstatus.dev)
 
 [![Digital Ocean](./assets/branding/digitalocean.png)](https://digitalocean.com)
 
+
+</div>
 
 <details>
 <summary>Table of Contents</summary>
