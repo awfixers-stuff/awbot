@@ -12,7 +12,9 @@
 
 [![OpenStatus](./assets/branding/openstatus.svg)](https://openstatus.dev)
 
-[![Digital Ocean](./assets/branding/digitalocean.png)](https://digitalocean.com)
+[![Digital Ocean](./assets/branding/digitalocean.png)](https://www.digitalocean.com/?refcode=ff2ff3528450&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge)
+
+
 
 <br />
 
@@ -74,9 +76,15 @@ We (royally) decided that we wanted to make a bot that is able to do everything 
 
 ### AWBot
 
+AWBot is written in Python using a custom version of [Discord.py](https://github.com/awfixers-stuff/discord.py) that is being updated to support the latest versions of python, depenancies, and the discord api. This will allow for it to be faster, slimmer, and more powerful then the commonly used version of the wrapper.
+
 ### Dashboard
 
+The dashboard is a Next.js app boostrapped with create-next-app and bun, with the added depenancies of Craft, [components.work](https://components.work) and [shadcn/ui](https://ui.shadcn.com). For security it used Cloudflare Turnsile, better auth and clerk. For billing it uses Clerk and Stripe.
+
 ### Docs
+
+the Docs are created and made with [FumaDocs](https://fumadocs.dev) and they are deployed via [Vercel](https://vercel.com/?ref=awbot)
 
 ### API
 
