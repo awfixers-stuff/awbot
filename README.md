@@ -1,5 +1,7 @@
 <div align="center">
 
+# see [TODO](todo.md) for what is currently cooking!
+
 # AWBot
 
 # Open Sourced under the GPLv3 or later License.
