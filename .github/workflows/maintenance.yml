@@ -1,8 +1,7 @@
 name: Maintenance
 on:
   push:
-    branches:
-      - main
+  pull_request:
   workflow_dispatch:
     inputs:
       cleanup_images:
@@ -24,7 +23,7 @@ on:
         description: Optional earlier SHA for TODOs
         required: false
   schedule:
-    - cron: 0 3 1 * * 
+    - cron: 0 3 1 * *
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: false
