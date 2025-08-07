@@ -86,6 +86,7 @@ profile_default/
 
 # Extensions and project-specific
 awbot/extensions/*
+!awbot/extensions/veriban.py
 !awbot/extensions/README.md
 !awbot/extensions/__init__.py
 awbot/logs/
