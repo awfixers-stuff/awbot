@@ -1,0 +1,24 @@
+Resolving dependencies
+Resolved, downloaded and extracted [311]
+warn: incorrect peer dependency "react@19.1.0"
+
+error: No version matching "^3.3.2" found for specifier "tailwind-merge" (but package exists)
+
+error: No version matching "^2.1.2" found for specifier "clsx" (but package exists)
+
+error: No version matching "^0.7.2" found for specifier "class-variance-authority" (but package exists)
+
+error: No version matching "^1.3.7" found for specifier "tw-animate-css" (but package exists)
+
+error: No version matching "^15.5.2" found for specifier "next" (but package exists)
+
+error: No version matching "^7.7.2" found for specifier "@clerk/nextjs" (but package exists)
+
+error: No version matching "^15.5.2" found for specifier "eslint-config-next" (but package exists)
+error: eslint-config-next@^15.5.2 failed to resolve
+error: tw-animate-css@^1.3.7 failed to resolve
+error: @clerk/nextjs@^7.7.2 failed to resolve
+error: class-variance-authority@^0.7.2 failed to resolve
+error: clsx@^2.1.2 failed to resolve
+error: next@^15.5.2 failed to resolve
+error: tailwind-merge@^3.3.2 failed to resolve

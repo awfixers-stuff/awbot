@@ -1,0 +1,1 @@
+awbot/dashboard/app/sign-up/page.tsx
