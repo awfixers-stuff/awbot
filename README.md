@@ -1,8 +1,8 @@
+<div align="center">
+
 # AWBot
 
 # Open Sourced under the GPLv3 or later License.
-
-<div align="center">
 
 # Key Partners and Sponsors:
 
