@@ -88,13 +88,19 @@ the Docs are created and made with [FumaDocs](https://fumadocs.dev) and they are
 
 ### API
 
+the API is written in Go using a custom [Discordgo](https://github.com/awfixers-stuff/discordgo) and a fork of [Disgorg](https://github.com/awfixers-stuff/disgord) This API registers commands against the Discord API and allows us to manage admin tasks with the bot via application commands in the basement.
+
 ### AI
+
+all of our AI calls are written in Python async code.
 
 ### AI Tooling
 
+you can learn more about our AI tooling by reading it. It uses async, httpx, and is written in Python. It is almost entirely custom tooling written to do what we need.
+
 ### CI
 
-
+our local CI is built from the old discontinued project Makes, we have look thru the code and found that we would like to keep maintaining it as we believe it will be really helpful in adding unit tests as pre-commit hooks people will have to go thru when they want to commit to our codebase.
 
 
 <div align="center">

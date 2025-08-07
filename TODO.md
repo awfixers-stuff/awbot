@@ -2,6 +2,7 @@
 
 ## AI Tooling
 
+We are going to impliment better proxying and better security in the AI tooling so that queries are sent back and forth correctly, efficiently, and securely. We want to be able to provide near real time interactions. You can find ai tooling [here](/ai-tooling)
 
 ## API
 

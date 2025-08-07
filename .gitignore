@@ -130,4 +130,4 @@ reports/
 target/
 # Ignore CI/CD artifacts if using GitHub Actions, etc.
 .github/workflows/*.yml~
-LICENSE.*
+LICENSE
