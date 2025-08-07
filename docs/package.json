@@ -9,7 +9,7 @@
     "postinstall": "fumadocs-mdx"
   },
   "dependencies": {
-    "@clerk/nextjs": "^6.34.0",
+    "@clerk/nextjs": "^6.29.0",
     "fumadocs-core": "^16.0.0",
     "fumadocs-mdx": "^12.0.0",
     "fumadocs-ui": "^16.0.0",
