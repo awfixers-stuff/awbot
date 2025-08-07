@@ -40,7 +40,7 @@ jobs:
       issues: write
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@8edcb1bdb4e267140fa742c62e395cd74f332709
         with:
           fetch-depth: 0
       - name: Convert TODOs to Issues
@@ -69,7 +69,7 @@ jobs:
       contents: read
     steps:
       - name: Delete old container versions
-        uses: actions/delete-package-versions@e5bc658cc4c965c472efe991f8beea3981499c55
+        uses: actions/delete-package-versions@4dbb860504f6d0cde296a192842138c03915746a
         with:
           package-name: awbot
           package-type: container
@@ -84,7 +84,7 @@ jobs:
       issues: write
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@8edcb1bdb4e267140fa742c62e395cd74f332709
       - name: Check for large files
         run: |
           echo "Checking for files larger than 50MB..."
