@@ -88,6 +88,8 @@ the Docs are created and made with [FumaDocs](https://fumadocs.dev) and they are
 
 ### API
 
+the API is written in Go using a custom [Discordgo](https://github.com/awfixers-stuff/discordgo) and a fork of [Disgorg](https://github.com/awfixers-stuff/disgorg) This API registers commands against the Discord API and allows us to manage admin tasks with the bot via application commands in the basement.
+
 ### AI
 
 ### AI Tooling
