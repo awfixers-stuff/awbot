@@ -1,0 +1,91 @@
+name: build all
+
+on:
+  push:
+  pull_request:
+  workflow_run:
+  workflow_call:
+  workflow_dispatch:
+  schedule:
+    - cron: "15 15 * * 2"
+
+jobs:
+  prepare:
+    name: Prepare (checkout & install all dependencies)
+    runs-on: ubuntu-latest
+    outputs:
+      repo-ref: ${{ steps.set-ref.outputs.repo-ref }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set repo ref output
+        id: set-ref
+        run: echo "repo-ref=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
+
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: Install dashboard dependencies
+        working-directory: awbot/dashboard
+        run: bun install
+
+  dashboard:
+    needs: prepare
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      packages: write
+      actions: write
+      contents: write
+      deployments: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Call build-dash workflow
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: '.github/workflows/build-dash.yml',
+              ref: context.ref.replace('refs/heads/', ''),
+            })
+
+  docs:
+    needs: prepare
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Call build-docs workflow
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: '.github/workflows/build-docs.yml',
+              ref: context.ref.replace('refs/heads/', ''),
+            })
+
+  deploy:
+    needs: [dashboard, docs]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Call deploy workflow (deploy.md)
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'makes/docs/src/configuration/builtins/deploy.md',
+              ref: context.ref.replace('refs/heads/', ''),
+            })
