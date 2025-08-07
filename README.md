@@ -1,6 +1,6 @@
 <div align="center">
 
-# see [TODO](todo.md) for what is currently cooking!
+# see [TODO](TODO.md) for what is currently cooking!
 
 # AWBot
 
