@@ -154,5 +154,5 @@ class EmbedCreator:
             return (
                 text,
                 user_display_avatar
-                or "https://github.com/allthingslinux/awbot/blob/main/assets/branding/avatar.png?raw=true",
+                or "https://github.com/awfixers-stuff/awbot/blob/main/assets/branding/avatar.png?raw=true",
             )

@@ -6,9 +6,9 @@ from reactionmenu import ViewButton, ViewMenu
 from awbot.bot import awbot
 from awbot.ui.embeds import EmbedCreator
 
-# FIXME: THIS IS A ALL THINGS LINUX SPECIFIC FILE
+# FIXME: THIS IS A AJ's Basement SPECIFIC FILE
 # This will be moved to a plugin as soon as possible
-# Please do not enable this cog in your bot if you are not All Things Linux
+# Please do not enable this cog in your bot if you are not AJ's Basement
 
 des_ids = [
     [1175177565086953523, "_kde"],

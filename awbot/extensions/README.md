@@ -2,6 +2,8 @@
 
 This is one of the more new/basic features of awbot, however it is a very powerful one. This will let you add custom commands to awbot without having to modify the code. This is done by creating a new file in the `awbot/extensions` folder. The file is just a regular Discord.py cog.
 
+check our [veriban.py cog](veriban.py) for an example
+
 At the end of the day it is about the same as just adding a cog to the bot manually, you can also do this if you so wish (the src/ folder is docker mounted so modifications will be reflected in the container as well).
 
 > [!TIP]
