@@ -22,12 +22,19 @@
 <summary>Table of Contents</summary>
 
 [AWBot](#awbot)
+<br/>
 [License](#open-sourced-under-the-gplv3-or-later-license)
+<br/>
 [Table of Contents](#table-of-contents)
+<br/>
 [Background](#background)
+<br/>
 [Tech Stack](#tech-stack)
+<br/>
 [Github Contributers](#github-contributers)
+<br/>
 [Star History](#star-history)
+<br/>
 
 </details>
 
