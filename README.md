@@ -4,9 +4,9 @@
 
 # Partners and Sponsors:
 
-![[OpenStatus](https://openstatus.dev)](./assets/)
+[![OpenStatus](./assets/branding/openstatus.png)](https://openstatus.dev)
 
-![[Digital Ocean](https://digitalocean.com)](./assets/branding/digitalocean.png)
+[![Digital Ocean](./assets/branding/digitalocean.png)](https://digitalocean.com)
 
 
 <details>
