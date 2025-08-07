@@ -17,6 +17,8 @@
 
 </div>
 
+<h1>
+
 <details>
 <summary>Table of Contents</summary>
 
@@ -29,6 +31,8 @@
 - [Github Contributers](#github-contributers)
 - [Star History](#star-history)
 </details>
+
+</h1>
 
 # Background:
 
